@@ -1,0 +1,75 @@
+project-name: foo
+version: v0.0.1
+Tests:
+    CSW:
+        uses: flake8
+        run:
+            - del -f flake8-report.txt
+            - flake8 --ignore=E501 src --output-file=flake8-report.txt
+        report:
+            lang: python
+            type: none
+            path: none
+    Unittest:
+        uses: unittest
+        run:
+            - python -c print('A')
+            - python -c print('B')
+            - python -c print('C')
+        report:
+            lang: python
+            type: html
+            path: path-to/report.html
+    Coverage:
+        uses: coverage
+        run:
+            - python -c print('A')
+            - python -c print('B')
+            - python -c print('C')
+            # - coverage run A/foo.py
+            # - coverage xml
+        report:
+            lang: python
+            type: xml
+            path: path-to/report.xml
+    APItest:
+        uses: unittest
+        run:
+            - python -c print('A')
+            - python -c print('B')
+            - python -c print('C')
+        report:
+            lang: python
+            type: html
+            path: path-to/report
+    E2Etest:
+        uses: unittest
+        run:
+            - python -c print('A')
+            - python -c print('B')
+            - python -c print('C')
+        report:
+            lang: python
+            type: html
+            path: path-to/report.html
+Score:
+    custom: "True" # default is False
+    set: # If custom is False, set it to 0%
+        CSW: "10%"
+        Unittest: "30%"
+        Coverage: "10%"
+        APItest: "30%"
+        E2Etest: "20%"
+Post:
+    type: email
+    set:
+        -
+            name: developer
+            recipients:
+                - "foo@bar.com"
+                - "foo@bar.com"
+        -
+            name: director
+            recipients:
+                - "abc@abc.com"
+                - "example@example.com"

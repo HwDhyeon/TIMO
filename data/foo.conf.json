@@ -1,0 +1,77 @@
+{
+    "project-name": "foo",
+    "version": "v0.0.1",
+    "Tests": {
+        "CSW": {
+            "uses": "flake8",
+            "with": "default",
+            "run": [
+                "flake8 --ignore=E501 src --output-file=flake8-report.txt"
+            ]
+        },
+        "Unittest": {
+            "uses": "unittest",
+            "with": "default",
+            "run": [
+                "python -m unittest A/foo.py",
+                "python -m unittest B/foo.py",
+                "python -m unittest C/foo.py"
+            ]
+        },
+        "Coverage": {
+            "uses": "unittest",
+            "with": "default",
+            "run": [
+                "python -m unittest A/foo.py",
+                "python -m unittest B/foo.py",
+                "python -m unittest C/foo.py"
+            ]
+        },
+        "APItest": {
+            "uses": "unittest",
+            "with": "default",
+            "run": [
+                "python -m unittest A/foo.py",
+                "python -m unittest B/foo.py",
+                "python -m unittest C/foo.py"
+            ]
+        },
+        "E2Etest": {
+            "uses": "unittest",
+            "with": "default",
+            "run": [
+                "python -m unittest A/foo.py",
+                "python -m unittest B/foo.py",
+                "python -m unittest C/foo.py"
+            ]
+        }
+    },
+    "Score": {
+        "custom": "True",
+        "set": {
+            "CSW": "10%",
+            "Unittest": "30%",
+            "Coverage": "10%",
+            "APItest": "30%",
+            "E2Etest": "20%"
+        }
+    },
+    "Post": {
+        "type": "email",
+        "set": [
+            {
+                "name": "developer",
+                "recipients": [
+                    "foo@bar.com"
+                ]
+            },
+            {
+                "name": "director",
+                "recipients": [
+                    "foo@bar.com",
+                    "abc@abc.com"
+                ]
+            }
+        ]
+    }
+}
