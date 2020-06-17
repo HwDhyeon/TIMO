@@ -1,4 +1,5 @@
 from colors import color
+from timo.decorator import timer
 from typing import Any
 from typing import AnyStr
 from typing import Dict
@@ -13,18 +14,18 @@ import pymysql
 import time
 import yaml
 
+def colored_print(msg: AnyStr, color_name: AnyStr, end='\n') -> NoReturn:
+    """
+    Apply color to the print function.
 
-def timer(original_func):
-    def wrapper_func(*args, **kwargs):
-        start_time: float = time.time()
-        result = original_func(*args, **kwargs)
-        end_time: float = time.time()
-        print('Time spending: {:.2f} seconds'.format(end_time - start_time), end='\n\n')
-        return result
-    return wrapper_func
+        Parameters:
+            msg (str):        Message to print
+            color_name (str): Color
+            end (str) :       Same as end parameter of print function
 
-
-def colored_print(msg: AnyStr, color_name: AnyStr, end='\n'):
+        Returns
+        
+    """
     print(color(msg, color_name), end=end)
 
 
@@ -109,7 +110,7 @@ class MySQL(object):
             else:
                 return False
         self.cursor.execute(sql)
-        colored_print('Running query...', 'yellow', end='\n\n')
+        colored_print('Sending query...', 'yellow', end='\n\n')
         try:
             if type == 'select':
                 result: list = list(self.cursor.fetchall())

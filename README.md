@@ -28,5 +28,9 @@ cd TIMO
 docker build -f Dockerfile -t TIMO:latest .
 ```
 
-_Soon we'll make it available for cloning on Dockerhub._  
-_곧 도커허브에서도 만나볼 수 있게 만들겠습니다._
+## Usege
+
+```shell
+cd timo
+python runner.py <arguments>
+```
