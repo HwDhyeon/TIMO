@@ -10,5 +10,6 @@ class Error(Exception):
 
 
 class FileExtensionError(Error):
+    """This error occurs when the file extension does not meet the requirements."""
     def __str__(self) -> str:
         return '파일 확장명이 올바르지 않습니다.'
