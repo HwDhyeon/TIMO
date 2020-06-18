@@ -31,6 +31,6 @@ docker build -f Dockerfile -t TIMO:latest .
 ## Usege
 
 ```shell
-cd timo
-python runner.py <arguments>
+cd TIMO/timo
+python core.py test run <argument>
 ```
