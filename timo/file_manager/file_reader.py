@@ -1,3 +1,5 @@
+"""Read various files."""
+
 from bs2json import bs2json
 from bs4 import BeautifulSoup # HTML 파싱 모듈
 from exception import FileExtensionError
@@ -116,11 +118,3 @@ class Reader(object):
                 dict: Dictionary containing YML element structure
         """
         return self.read_yaml_file(path)
-
-
-if __name__ == "__main__":                                                                
-    r = Reader()
-    rr = r.read_json_file('sql.json')
-    print(rr)
-    rr = r.read_yaml_file('sql.yaml')
-    print(rr)

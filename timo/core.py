@@ -1,12 +1,13 @@
-from command_manager.test_runner import TestRunner
+from test_manager.test_runner import TestRunner
 from file_manager.config_reader import ConfigReader
+from database_manager.mysql import MySQL
 from typing import NoReturn
 import fire
 
 
 class Main(object):
     def __init__(self):
-        self.conf = ConfigReader('foo')
+        self.conf = ConfigReader()
     def run(self, test_name=None) -> NoReturn:
         # test_kinds = ['CSW', 'Unittest', 'Coverage', 'APItest', 'E2Etest']
         print(f'Running {test_name} in now.')
