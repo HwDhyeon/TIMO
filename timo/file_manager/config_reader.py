@@ -6,6 +6,7 @@ from exception import FileExtensionError
 from typing import Dict
 from typing import List
 from typing import NoReturn
+from utils import colored_print
 import os
 
 
@@ -25,9 +26,11 @@ class ConfigReader(object):
         """
 
         def _read_config(ext: str) -> Dict:
-            if ext == 'json' and (path := os.path.isfile('data/conf.json')):
+            if ext == 'json' and os.path.isfile('data/conf.json'):
+                path = 'data/conf.json'
                 conf = self._file_reader.read_json_file(path)
-            elif (ext == 'yaml' or ext == 'yml') and (path := os.path.isfile(f'data/conf.{ext}')):
+            elif (ext == 'yaml' or ext == 'yml') and os.path.isfile(f'data/conf.{ext}'):
+                path = f'data/conf.{ext}'
                 conf = self._file_reader.read_yaml_file(path)
             else:
                 raise FileExtensionError
@@ -36,6 +39,8 @@ class ConfigReader(object):
         if ext is not None:
             if ext not in ['json', 'yaml', 'yml']:
                 raise FileExtensionError
+            else:
+                colored_print('We found new configuration file.', 'red')
             self._file_writer.write_file('data/configpath.json', {'ConfType': ext}, 'json')
             return _read_config(ext)
         else:
