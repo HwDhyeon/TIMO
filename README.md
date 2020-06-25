@@ -43,7 +43,7 @@ docker build -f Dockerfile -t TIMO:latest .
 
 #### How to use two conf files
 
-이 프로그램은 처음 실행 때 반드시 conf 파일이 어떤 형태인지 지정해주어야 합니다. 당신은 그저 `set` 명령어를 사용하기만 하면 프로그램이 자동으로 당신의 conf 파일을 탐색하고 찾아낸 파일의 형식을 data 폴더 안의 `configpath.json`에 저장합니다. 그래서 이 파일을 미리 구성해놓고 원하는 타이밍에 파일을 수정한다면 두가지 conf 파일을 사용할 수 있습니다. `configpath.json` 파일의 형태는 다음과 같습니다.
+이 프로그램은 처음 실행 때 반드시 conf 파일이 어떤 형태인지 지정해주어야 합니다. 당신은 그저 `setting` 명령어를 사용하기만 하면 프로그램이 자동으로 당신의 conf 파일을 탐색하고 찾아낸 파일의 형식을 data 폴더 안의 `configpath.json`에 저장합니다. 그래서 이 파일을 미리 구성해놓고 원하는 타이밍에 파일을 수정한다면 두가지 conf 파일을 사용할 수 있습니다. `configpath.json` 파일의 형태는 다음과 같습니다.
 
 ```json
 {
@@ -58,7 +58,7 @@ or json and yml
 `conf` 파일 세팅
 
 ``` shell
-$ python timo/core.py set --ext="yaml"
+$ python timo/core.py setting --ext="yaml"
 We found new configuration file.
 ```
 
