@@ -1,4 +1,4 @@
-"""You can access MySQL and execute query statements."""
+"""Connect to MySQL and execute various queries."""
 
 from colors import color
 from decorators import timer
@@ -9,22 +9,12 @@ from typing import List
 from typing import NoReturn
 from typing import Tuple
 from typing import Union
+from utils import colored_print
 import csv
 import json
 import os
 import pymysql
 import yaml
-
-def _colored_print(msg: AnyStr, color_name: AnyStr, end='\n') -> NoReturn:
-    """
-    Apply color to the print function.
-
-        Parameters:
-            msg (str):        Message to print
-            color_name (str): Color
-            end (str) :       Same as end parameter of print function
-    """
-    print(color(msg, color_name), end=end)
 
 
 class MySQL(object):
@@ -40,22 +30,22 @@ class MySQL(object):
             with open(file=os.getcwd() + '/data/db.json', mode='r', encoding='utf-8') as db:
                 return json.load(db)
         try:
-            _colored_print('Connecting DB...', 'yellow')
+            colored_print('Connecting DB...', 'yellow')
             self.db_info: dict = _read_DB_info()
             self.conn: pymysql.Connection = pymysql.connect(
                 host = self.db_info['host'],
                 port = self.db_info['port'],
                 user = self.db_info['user'],
-                passwd = self.db_info['passwd'],
+                password = self.db_info['password'],
                 db = self.db_info['db']
             )
             self.cursor: pymysql.cursors.Cursor = self.conn.cursor()
         except Exception as e:
-            _colored_print(e, 'red')
+            colored_print(e, 'red')
             self.cursor.close()
             self.conn.close()
         else:
-            _colored_print('Done', 'green')
+            colored_print('Done', 'green')
 
     def close_DB_session(self) -> NoReturn:
         """Terminate the connection to the database."""
@@ -65,7 +55,7 @@ class MySQL(object):
             self.conn.close()
             self.cursor.close()
         except Exception as e:
-            _colored_print(e, 'red')
+            colored_print(e, 'red')
 
     @timer
     def send_query(self, sql: AnyStr, type: Union['select', 'insert', 'delete', 'update'], save=None) -> NoReturn:
@@ -120,8 +110,8 @@ class MySQL(object):
                         data(any): Raw data to be saved to file
                 """
                 ext: str = path.split('.')[-1]
-                _colored_print('Save query result...', 'yellow')
-                _colored_print(f'File ext: {ext}', 'yellow', end='\n\n')
+                colored_print('Save query result...', 'yellow')
+                colored_print(f'File ext: {ext}', 'yellow', end='\n\n')
                 with open(file=path, mode='w', encoding='utf-8', newline='') as f:
                     if ext == 'csv' or ext == 'txt':
                         wr = csv.writer(f)
@@ -145,7 +135,7 @@ class MySQL(object):
                 return r
 
             if save is not None:
-                _colored_print('Parse query result...', 'yellow', end='\n\n')
+                colored_print('Parse query result...', 'yellow', end='\n\n')
                 data = None
                 columns: list = _get_column_names(cursor=self.cursor)
                 if save == 'json':
@@ -158,9 +148,9 @@ class MySQL(object):
                         data.append(row)
                 else:
                     if save != 'txt':
-                        _colored_print('현재 지원되지 않는 파일 형식입니다.', 'red', end='\t')
-                        _colored_print(f'(입력된 파일 형식: {save})', 'red')
-                        _colored_print('sql.txt 파일로 대체됩니다.', 'red', end='\n\n')
+                        colored_print('현재 지원되지 않는 파일 형식입니다.', 'red', end='\t')
+                        colored_print(f'(입력된 파일 형식: {save})', 'red')
+                        colored_print('sql.txt 파일로 대체됩니다.', 'red', end='\n\n')
                         save = 'txt'
                     data = [columns]
                     for row in list(result):
@@ -170,7 +160,7 @@ class MySQL(object):
             else:
                 return False
         self.cursor.execute(sql)
-        _colored_print('Sending query...', 'yellow', end='\n\n')
+        colored_print('Sending query...', 'yellow', end='\n\n')
         try:
             if type == 'select':
                 result: list = list(self.cursor.fetchall())
@@ -182,9 +172,9 @@ class MySQL(object):
             else:
                 pass
         except Exception as e:
-            _colored_print(e, 'red')
+            colored_print(e, 'red')
         else:
-            _colored_print('Done', 'green')
+            colored_print('Done', 'green')
 
 
 if __name__ == "__main__":
