@@ -51,7 +51,7 @@ class Reader(object):
         """
         self._check_file_extension(path, 'html')
         html_string: str = self.read_raw_file(path)
-        soup: BeautifulSoup = BeautifulSoup(html_string, 'html.parse')
+        soup: BeautifulSoup = BeautifulSoup(html_string, 'html.parser')
         converter: bs2json = bs2json() # HTML을 dict로 변환하기 위한 모듈
         tag = soup.find('html') # 최상단 엘리먼트인 html 태그를 찾는다
         json_html: dict = converter.convert(tag) # html 태그를 포함하여 하위의 모든 태그와 속성을 dict로 변환한다
