@@ -11,6 +11,7 @@ import yaml
 
 class Reader(object):
     """파일내용을 규칙에 따라 읽습니다."""
+
     def _check_file_extension(self, path: str, ext: str) -> NoReturn:
         """
         Checks whether the extension of the file matches the requirements.
@@ -22,11 +23,12 @@ class Reader(object):
             Raised:
                 FileExtensionError: If the file extensions do not match, an appropriate error is generated.
         """
+
         file_ext = path.split('.')[-1]
         if file_ext != ext:
             raise FileExtensionError
 
-    def read_raw_file(self, path) -> str:
+    def read_raw_file(self, path: str) -> str:
         """
         Reads any file and returns it as a string.
 
@@ -36,6 +38,7 @@ class Reader(object):
             Returns:
                 str: String containing the contents of the file
         """
+
         with open(file=path, mode='r', encoding='utf-8') as f:
             return f.read()
 
@@ -49,6 +52,7 @@ class Reader(object):
             Returns:
                 dict: Dictionary containing HTML element structure
         """
+
         self._check_file_extension(path, 'html')
         html_string: str = self.read_raw_file(path)
         soup: BeautifulSoup = BeautifulSoup(html_string, 'html.parser')
@@ -67,6 +71,7 @@ class Reader(object):
             Returns:
                 dict: Dictionary containing XML element structure
         """
+
         self._check_file_extension(path, 'xml')
         xml_string: str = self.read_raw_file(path)
         xml_dict = xmltodict.parse(xml_string)
@@ -84,6 +89,7 @@ class Reader(object):
             Returns:
                 dict: Dictionary containing JSON element structure
         """
+
         self._check_file_extension(path, 'json')
         json_string: str = self.read_raw_file(path)
         json_data: dict = json.loads(json_string)
@@ -99,6 +105,7 @@ class Reader(object):
             Returns:
                 dict: Dictionary containing YAML element structure
         """
+
         ext = path.split('.')[-1]
         if ext != 'yml' and ext != 'yaml':
             ext = 'yaml'
@@ -117,4 +124,5 @@ class Reader(object):
             Returns:
                 dict: Dictionary containing YML element structure
         """
+
         return self.read_yaml_file(path)
