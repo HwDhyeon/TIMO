@@ -1,6 +1,6 @@
 FROM python:3.8.1
 USER root
-WORKDIR /usr/src
+WORKDIR /usr/src/TIMO
 ENV PYTHONPATH=/usr/src/TIMO/timo;${PYTHONPATH}
 
 COPY . .
