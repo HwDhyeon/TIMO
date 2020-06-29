@@ -20,3 +20,5 @@ class JacocoParser(object):
         elif file_type == 'xml':
             # xml = self.reader.read_xml_file(path)
             return_val['test_val'] = -1
+        
+        return return_val
