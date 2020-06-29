@@ -1,3 +1,4 @@
+from exception import UnknownTestTestToolError
 from file_manager.file_reader import Reader
 from test_manager.tools.jacoco import JacocoParser
 from test_manager.tools.surefire import SurefireParser
@@ -7,49 +8,109 @@ from typing import Union
 
 
 class Parser(object):
+    """Test result parser"""
+
     def __init__(self) -> NoReturn:
-        self.reader: Reader = Reader()
         self.surefire = SurefireParser()
         self.unittest = UnittestParser()
         self.jacoco = JacocoParser()
 
-    def _set_result_dict(self, success, fail, skip):
-            self.return_value['success'] = str(success)
-            self.return_value['fail'] = str(fail)
-            self.return_value['skip'] = str(skip)
+    def _csw(self) -> dict:
+        """
+        Parse Code static analysis result.
 
-    def _csw(self) -> NoReturn:
-        pass
+            Returns:
+                dict: Test result
+        """
 
-    def _unittest(self) -> NoReturn:
+        result = {}
+        return result
+
+    def _unittest(self) -> dict:
+        """
+        Parse Unittest result.
+
+            Returns:
+                dict: Test result
+        """
+
         if self.test_tool == 'surefire':
-            result: str = self.reader.read_raw_file(self.path).split('\n')[-1].split(', ')
-            total = int(result[0].split()[-1])
-            fail = int(result[1].split()[-1])
-            skip = int(result[2].split()[-1])
-            success: int = total - fail - skip
-            self._set_result_dict(success, fail, skip)
+            result = self.surefire.parse(path=self.path, file_type=self.file_type)
+        elif self.test_tool == 'unittest':
+            result = self.unittest.parse(path=self.path, file_type=self.file_type)
+        else:
+            raise UnknownTestTestToolError
+        
+        return result
 
-    def _coverage(self) -> NoReturn:
-        pass
+    def _coverage(self) -> dict:
+        """
+        Parse Coverage test result.
 
-    def _apitest(self) -> NoReturn:
-        pass
+            Returns:
+                dict: Test result
+        """
 
-    def _e2etest(self) -> NoReturn:
-        pass
+        if self.test_tool == 'jacoco':
+            result = self.jacoco.parse(path=self.path, file_type=self.file_type)
+        else:
+            raise UnknownTestTestToolError
 
-    def parse(self, kind: Union['CSW', 'Unittest', 'Coverage', 'APItest', 'E2Etest'], report_path: str, test_tool: str):
+        return result
+
+    def _apitest(self) -> dict:
+        """
+        Parse API test result.
+
+            Returns:
+                dict: Test result
+        """
+
+        result = {}
+        return result
+
+    def _e2etest(self) -> dict:
+        """
+        Parse End to End result.
+
+            Returns:
+                dict: Test result
+        """
+
+        result = {}
+        return result
+
+    def parse(self, kind: Union['CSW', 'Unittest', 'Coverage', 'APItest', 'E2Etest'], report_path: str, file_type: str, test_tool: str) -> dict:
+        """
+        Parse test result
+
+            Parameters:
+                kind(str): Test kind
+                report_path: Report file location
+                file_type: Report file's ext
+                test_tool: Test tool
+
+            Returns:
+                dict: Test result
+        """
+
         self.path = report_path
-        self.test_tool = test_tool
-        self.return_value = { 'tool': self.test_tool, 'success': '', 'fail': '', 'skip': '' }
-        if (kind := kind.upper()) == 'CSW':
-            self._csw()
-        elif kind == 'UNITTEST':
-            self._unittest()
-        return self.return_value
+        self.file_type = file_type
+        self.test_tool = test_tool.lower()
+        if (kind := kind.lower()) == 'csw':
+            result = self._csw()
+        elif kind == 'unittest':
+            result = self._unittest()
+        elif kind == 'coverage':
+            result = self._coverage()
+        elif kind == 'apitest':
+            result = self._apitest()
+        elif kind == 'e2etest':
+            result = self._e2etest()
+
+        return result
 
 
 if __name__ == "__main__":
     p = Parser()
-    print(p.parse('unittest', './s.txt', 'surefire'))
+    print(p.parse('unittest', './s.txt', 'txt', 'surefire'))
