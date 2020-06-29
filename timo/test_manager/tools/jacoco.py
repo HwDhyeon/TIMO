@@ -15,6 +15,7 @@ class JacocoParser(object):
             return_val['test_val'] = int(html['html']['body']['table']['tfoot']['tr']['td'][2]['text'].rstrip('%'))
         elif file_type == 'csv':
             # csv = self.reader.read_raw_file(path)
+            colored_print('Sorry, there is no information you can get from this type of file.', 'orange')
             return_val['test_val'] = -1
         elif file_type == 'xml':
             # xml = self.reader.read_xml_file(path)
