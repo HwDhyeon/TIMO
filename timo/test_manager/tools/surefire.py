@@ -17,7 +17,7 @@ class SurefireParser(object):
     def __init__(self) -> NoReturn:
         self.reader: Reader = Reader() # 결과 파일을 읽기위해 클래스 선언
 
-    def parse(self, path: str, file_type: Union['xml', 'txt']) -> Dict['surefire', int, int, int]:
+    def parse(self, path: str, file_type: Union['xml', 'txt']) -> Dict:
         """
         Read the surefire test result file, find the failure and skip values, and use it to find the success value and create a dictionary.
 
