@@ -20,6 +20,31 @@ def colored_print(msg: Any, colorname: str, end='\n') -> NoReturn:
     print(color(msg, colorname), end=end)
 
 
+def pretty_print(obj: Any) -> NoReturn:
+    """
+    The object is processed according to the format and output.
+
+        Parameters:
+            obj(any): Any
+    """
+
+    def _print():
+        for key, value in obj.items():
+            print('│' + '―' * 15 + '┼' + '―' * 15 + '│')
+            print('│{key:^15}│{value:^15}│'.format(key=key, value=value))
+        print('└' + '―' * 15 + '┴' + '―' * 15 + '┘')
+
+    if type(obj) is dict:
+        print('┌' + '―' * 15 + '┬' + '―' * 15 + '┐')
+        print('│      key      │     value     │')
+        _print()
+    elif type(obj) is list or type(obj) is tuple or type(obj) is set:
+        obj = dict(zip([x for x in range(len(obj))], obj))
+        print('┌' + '―' * 15 + '┬' + '―' * 15 + '┐')
+        print('│     index     │     value     │')
+        _print()
+
+
 def get_command_black_list() -> List[AnyStr]:
     """
     Get a list of commands to exclude from execution.
@@ -50,3 +75,10 @@ def equals(obj1, obj2, *, deep=False) -> bool:
         return True if obj1 == obj2 else False
     else:
         return True if obj1 is obj2 else False
+
+
+if __name__ == "__main__":
+    pretty_print({'a': '1', 'b': '2', 'cdsmfefuiguh': 12348234723})
+    pretty_print([1111, 2434, 443, 43244, 235, 612233, 'asdjksdjfyj'])
+    pretty_print((1111, 2434, 443, 43244, 235, 612233, 'asdjksdjfyj'))
+    pretty_print({1111, 2434, 443, 43244, 235, 612233, 'asdjksdjfyj'})
