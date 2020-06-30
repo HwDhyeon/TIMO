@@ -1,5 +1,7 @@
+from file_manager.config_reader import ConfigReader
 from exception import UnknownTestTestToolError
 from file_manager.file_reader import Reader
+from test_manager.tools.flake8 import Flake8Parser
 from test_manager.tools.jacoco import JacocoParser
 from test_manager.tools.surefire import SurefireParser
 from test_manager.tools.unittest import UnittestParser
@@ -11,9 +13,11 @@ class Parser(object):
     """Test result parser"""
 
     def __init__(self) -> NoReturn:
+        self.conf = ConfigReader()
         self.surefire = SurefireParser()
         self.unittest = UnittestParser()
         self.jacoco = JacocoParser()
+        self.flake8 = Flake8Parser()
 
     def _csw(self) -> dict:
         """
@@ -24,6 +28,9 @@ class Parser(object):
         """
 
         result = {}
+        if self.test_tool == 'flake8':
+            result = self.flake8.parse(path=self.path, file_type=self.file_type)
+
         return result
 
     def _unittest(self) -> dict:
@@ -80,7 +87,7 @@ class Parser(object):
         result = {}
         return result
 
-    def parse(self, kind: Union['CSW', 'Unittest', 'Coverage', 'APItest', 'E2Etest'], report_path: str, file_type: str, test_tool: str) -> dict:
+    def parse(self, kind: Union['CSW', 'Unittest', 'Coverage', 'APItest', 'E2Etest'], file_type: str, test_tool: str) -> dict:
         """
         Parse test result
 
@@ -94,7 +101,7 @@ class Parser(object):
                 dict: Test result
         """
 
-        self.path = report_path
+        self.path = self.conf.get_report_info(kind)['path']
         self.file_type = file_type
         self.test_tool = test_tool.lower()
         if (kind := kind.lower()) == 'csw':
@@ -109,8 +116,3 @@ class Parser(object):
             result = self._e2etest()
 
         return result
-
-
-if __name__ == "__main__":
-    p = Parser()
-    print(p.parse('unittest', './s.txt', 'txt', 'surefire'))
