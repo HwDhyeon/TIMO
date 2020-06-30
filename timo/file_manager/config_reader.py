@@ -40,7 +40,7 @@ class ConfigReader(object):
             if ext not in ['json', 'yaml', 'yml']:
                 raise FileExtensionError
             else:
-                colored_print('We found new configuration file.', 'red')
+                colored_print('We found new configuration file.', 'cyan')
             self._file_writer.write_file('data/configpath.json', {'ConfType': ext}, 'json')
             return _read_config(ext)
         else:
@@ -101,6 +101,11 @@ class ConfigReader(object):
                 dict: Dictionary with report information
         """
         return self.read_config_file()['Tests'][test_name]['report']
+
+    def get_test_tool(self, test_name: str) -> Dict:
+        return {
+            'uses': self.read_config_file()['Tests'][test_name]['uses']
+        }
 
     def get_score_info(self) -> Dict:
         """
