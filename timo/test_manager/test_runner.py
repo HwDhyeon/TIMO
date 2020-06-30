@@ -24,7 +24,7 @@ class TestRunner(object):
         if command in get_command_black_list(): # 입력받은 커맨드가 실행하면 안되는 커맨드인지 체크
             colored_print(f'Out: Not supports', 'red')
             return # 실행하면 안되는 커맨드라면 실행하지 않고 함수 종료
-        popen = subprocess.Popen(args=command, shell=True, stderr=subprocess.PIPE, stdout=subprocess.PIPE) # 커맨드를 실행함
+        popen = subprocess.Popen(args=shlex.split(command), shell=False, stderr=subprocess.PIPE, stdout=subprocess.PIPE) # 커맨드를 실행함
         stdout, _ = popen.communicate() # stderr 메세지는 무시한다
         colorname = 'green'
         if (result := stdout.decode('utf-8').replace('\n', '').replace('\r', '')) == '': # 출력값이 아무것도 없는 경우에는 'None'으로 변경한다
@@ -39,9 +39,12 @@ class TestRunner(object):
             Parameters:
                 command_list(str): List of commands to be executed.
         """
-
-        for command in command_list:
-            self.run(command)
+        
+        if len(command_list) == 0:
+            colored_print('No command found.', 'orage')
+        else:
+            for command in command_list:
+                self.run(command)
 
 
 if __name__ == "__main__":
