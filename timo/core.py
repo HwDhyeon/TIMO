@@ -1,7 +1,7 @@
 from database_manager.mysql import MySQL
 from file_manager.config_reader import ConfigReader
-from test_manager.test_runner import TestRunner
-from test_manager.test_parser import Parser
+from test_manager.command_runner import CommandRunner
+from test_manager.result_parser import Parser
 from typing import NoReturn
 from utils import colored_print
 from utils import pretty_print
@@ -11,7 +11,7 @@ import fire
 class Main(object):
     def __init__(self):
         self.conf = ConfigReader()
-        self.runner = TestRunner()
+        self.runner = CommandRunner()
 
     def run(self, test_name: str) -> NoReturn:
         # test_kinds = ['CSW', 'Unittest', 'Coverage', 'APItest', 'E2Etest']
