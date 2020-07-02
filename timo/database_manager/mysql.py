@@ -1,6 +1,5 @@
 """Connect to MySQL and execute various queries."""
 
-from colors import color
 from decorators import timer
 from typing import Any
 from typing import AnyStr
@@ -8,7 +7,6 @@ from typing import Dict
 from typing import List
 from typing import NoReturn
 from typing import Tuple
-from typing import Union
 from utils import colored_print
 import csv
 import json
@@ -31,19 +29,19 @@ class MySQL(object):
                 return json.load(db)
         try:
             colored_print('Connecting DB...', 'yellow')
-            self.db_info: dict = _read_DB_info()
+            self.db_info: dict = _read_DB_info()['mysql']
             self.conn: pymysql.Connection = pymysql.connect(
-                host = self.db_info['host'],
-                port = self.db_info['port'],
-                user = self.db_info['user'],
-                password = self.db_info['password'],
-                db = self.db_info['db']
+                host=self.db_info['host'],
+                port=self.db_info['port'],
+                user=self.db_info['user'],
+                password=self.db_info['password'],
+                db=self.db_info['db']
             )
             self.cursor: pymysql.cursors.Cursor = self.conn.cursor()
         except Exception as e:
             colored_print(e, 'red')
-            self.cursor.close()
-            self.conn.close()
+            # self.cursor.close()
+            # self.conn.close()
         else:
             colored_print('Done', 'green')
 
@@ -58,7 +56,7 @@ class MySQL(object):
             colored_print(e, 'red')
 
     @timer
-    def send_query(self, sql: AnyStr, type: Union['select', 'insert', 'delete', 'update'], save=None) -> NoReturn:
+    def send_query(self, sql: AnyStr, type: str, save=None) -> NoReturn:
         """
         Pass SQL query statements to the database.
 
@@ -96,7 +94,7 @@ class MySQL(object):
                                If any other format is entered, it is converted to txt.
 
                     result(List[Tuple]): A list that contains the results of the query.
-                
+
                 Returns:
                     bool: Returns True if saved as a file, False otherwise.
 
@@ -104,7 +102,7 @@ class MySQL(object):
             def _save(path: str, data: Any) -> NoReturn:
                 """
                 Save the input data in the designated format.
-                
+
                     Parameters:
                         path(str): Where the file will be saved
                         data(any): Raw data to be saved to file

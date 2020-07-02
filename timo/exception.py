@@ -1,6 +1,7 @@
 from typing import AnyStr
 from typing import NoReturn
 
+
 class Error(Exception):
     def __init__(self, msg: AnyStr) -> NoReturn:
         self.msg: str = msg

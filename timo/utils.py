@@ -53,7 +53,7 @@ def get_command_black_list() -> List[AnyStr]:
             list[str]: List of commands to exclude from execution.
     """
 
-    return ['dir',]
+    return ['dir', '']
 
 
 def equals(obj1, obj2, *, deep=False) -> bool:

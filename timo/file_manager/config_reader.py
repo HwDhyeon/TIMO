@@ -52,7 +52,7 @@ class ConfigReader(object):
 
     def get_project_name(self) -> str:
         """
-        Find the name of your project.  
+        Find the name of your project.\n
         If the project name in the configuration file and the name of the configuration file are different, the project name in the configuration file is returned.
 
             Returns:
@@ -77,7 +77,7 @@ class ConfigReader(object):
                 list[str]: List of strings containing test types
         """
         return [*self.read_config_file()['Tests']]
-    
+
     def get_test_suites(self, test_name: str) -> List[str]:
         """
         Returns the statement of a specific test.

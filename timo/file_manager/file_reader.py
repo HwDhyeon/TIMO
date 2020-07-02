@@ -1,13 +1,14 @@
 """Read various files."""
 
 from bs2json import bs2json
-from bs4 import BeautifulSoup # HTML 파싱 모듈
+from bs4 import BeautifulSoup  # HTML 파싱 모듈
 from exception import FileExtensionError
 from typing import Dict
 from typing import NoReturn
-import xmltodict # XML 파싱 모듈
+import xmltodict  # XML 파싱 모듈
 import json
 import yaml
+
 
 class Reader(object):
     """파일내용을 규칙에 따라 읽습니다."""
@@ -56,10 +57,10 @@ class Reader(object):
         self._check_file_extension(path, 'html')
         html_string: str = self.read_raw_file(path)
         soup: BeautifulSoup = BeautifulSoup(html_string, 'html.parser')
-        converter: bs2json = bs2json() # HTML을 dict로 변환하기 위한 모듈
-        tag = soup.find('html') # 최상단 엘리먼트인 html 태그를 찾는다
-        json_html: dict = converter.convert(tag) # html 태그를 포함하여 하위의 모든 태그와 속성을 dict로 변환한다
-        return json_html # 변환된 HTML을 리턴한다
+        converter: bs2json = bs2json()  # HTML을 dict로 변환하기 위한 모듈
+        tag = soup.find('html')  # 최상단 엘리먼트인 html 태그를 찾는다
+        json_html: dict = converter.convert(tag)  # html 태그를 포함하여 하위의 모든 태그와 속성을 dict로 변환한다
+        return json_html  # 변환된 HTML을 리턴한다
 
     def read_xml_file(self, path: str) -> Dict:
         """
