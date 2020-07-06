@@ -1,5 +1,14 @@
 init:
-	pip install -r requirements.txt
+	@pip install -r requirements.txt
 
 test:
-	python tests/*.py
+	@python tests/*.py
+
+run:
+	@python timo/core.py run --test_name=$(test)
+
+parse:
+	@python timo/core.py parse --test_name=$(test)
+
+insert:
+	@python timo/core.py parse --test_name=$(test) --db=$(db) --build_number=$(build_number)
