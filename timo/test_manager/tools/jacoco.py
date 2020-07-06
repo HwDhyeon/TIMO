@@ -9,7 +9,7 @@ class JacocoParser(object):
         self.reader = Reader()
 
     def parse(self, path: str, file_type: str) -> {str, int}:
-        return_val = {'test_tool': 'jacoco', 'test_val': 0}
+        return_val = {'test_val': 0}
         if file_type == 'html':
             html = self.reader.read_html_file(path)
             return_val['test_val'] = int(html['html']['body']['table']['tfoot']['tr']['td'][2]['text'].rstrip('%'))

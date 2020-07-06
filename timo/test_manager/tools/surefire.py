@@ -28,7 +28,6 @@ class SurefireParser(object):
         """
 
         return_val: dict = {
-            'test_tool': 'surefire',
             'success': 0,
             'fail': 0,
             'skip': 0
