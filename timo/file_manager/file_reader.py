@@ -11,7 +11,7 @@ import yaml
 
 
 class Reader(object):
-    """파일내용을 규칙에 따라 읽습니다."""
+    """Read the file according to the specified format."""
 
     def _check_file_extension(self, path: str, ext: str) -> NoReturn:
         """
