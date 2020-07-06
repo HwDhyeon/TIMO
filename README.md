@@ -53,6 +53,36 @@ docker build -f Dockerfile -t TIMO:latest .
 
 or json and yml
 
+#### How to write db.json
+
+**TIMO**가 데이터베이스와 연동을 하기 위해서는 `data/db.json` 파일이 작성되어 있어야 합니다.  
+데이터베이스별 작성 예시는 아래와 같습니다.
+
+```json
+{
+    "mysql": {
+        "host": "127.0.0.1",
+        "port": 3306,
+        "user": "root",
+        "password": "myroot",
+        "db": "mydatabase",
+        "charset": "utf8"
+    },
+    "oracle": {
+        "host": "127.0.0.1",
+        "port": "1521",
+        "user": "scott",
+        "password": "tiger"
+    },
+    "mongodb": {
+        "host": "127.0.0.1",
+        "port": "27017"
+    }
+}
+````
+
+_MariaDB를 사용하는 경우에는 MySQL로 작성해주세요 추후에 분리될 것입니다._
+
 ## Command list
 
 `conf` 파일 세팅
@@ -65,9 +95,35 @@ We found new configuration file.
 테스트 실행
 
 ```shell
-$ python timo/core.py run --test_name="E2Etest"
-Running E2Etest in now.
-Run: python -V
-Out: Python 3.8.1
-Time spending: 0.07 seconds
+$ python ./timo/core.py run --test_name=CSW
+Running CSW in now.
+Run: flake8 timo/ --ignore=E501 --exclude=__init__.py --output-file=flake8.txt
+Out: None
+Time spending: 0.74 seconds
 ```
+
+테스트 결과 파싱
+
+```shell
+$ python ./timo/core.py parse --test_name=CSW
+┌―――――――――┬―――――――――┐
+│      key      │     value     │
+│―――――――――┼―――――――――│
+│    warning    │      51       │
+└―――――――――┴―――――――――┘
+```
+
+테스트 결과 데이터베이스에 저장
+
+```shell
+$ python ./timo/core.py parse --test_name=CSW --db=mysql --build_number
+Connecting DB...
+Done
+Time spending: 0.03 seconds
+
+Sending INSERT query...
+Done
+Time spending: 0.01 seconds
+```
+
+_**TIMO**가 자동으로 `db.json`파일을 읽어서 DB와 연동한다_
