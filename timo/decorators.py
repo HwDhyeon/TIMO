@@ -1,8 +1,9 @@
 import time
 
+
 def timer(original_func):
     """
-    The execution time of the function is measured and the result is displayed on the screen  
+    The execution time of the function is measured and the result is displayed on the screen\n
     Use it as a decorator
     """
     def wrapper_func(*args, **kwargs):
