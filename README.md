@@ -92,7 +92,7 @@ $ python timo/core.py setting --ext="yaml"
 We found new configuration file.
 ```
 
-테스트 실행
+### Run test
 
 ```shell
 $ python ./timo/core.py run --test_name=CSW
@@ -102,7 +102,9 @@ Out: None
 Time spending: 0.74 seconds
 ```
 
-테스트 결과 파싱
+or `make run test=CSW`
+
+### Parsing test results
 
 ```shell
 $ python ./timo/core.py parse --test_name=CSW
@@ -113,10 +115,12 @@ $ python ./timo/core.py parse --test_name=CSW
 └―――――――――┴―――――――――┘
 ```
 
-테스트 결과 데이터베이스에 저장
+or `make parse test=CSW`
+
+### Insert test result to Database
 
 ```shell
-$ python ./timo/core.py parse --test_name=CSW --db=mysql --build_number
+$ python ./timo/core.py parse --test_name=CSW --db=mysql --build_number=3
 Connecting DB...
 Done
 Time spending: 0.03 seconds
@@ -125,5 +129,7 @@ Sending INSERT query...
 Done
 Time spending: 0.01 seconds
 ```
+
+or `make insert test=CSW db=mysql build_number=3`
 
 _**TIMO**가 자동으로 `db.json`파일을 읽어서 DB와 연동한다_
