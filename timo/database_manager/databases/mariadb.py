@@ -1,0 +1,2 @@
+class MariaDB(object):
+    pass

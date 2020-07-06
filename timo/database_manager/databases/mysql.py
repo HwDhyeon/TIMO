@@ -158,7 +158,7 @@ class MySQL(object):
             else:
                 return False
         self.cursor.execute(sql)
-        colored_print('Sending query...', 'yellow', end='\n\n')
+        colored_print(f'Sending {type.upper()} query to MySQL...', 'yellow')
         try:
             if type == 'select':
                 result: list = list(self.cursor.fetchall())
