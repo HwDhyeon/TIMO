@@ -1,4 +1,4 @@
-from database_manager.mysql import MySQL
+from database_manager.databases.mysql import MySQL
 import unittest
 import json
 import os
