@@ -1,4 +1,4 @@
-from database_manager.mysql import MySQL
+from database_manager.database import DatabaseManager
 from file_manager.config_reader import ConfigReader
 from test_manager.command_runner import CommandRunner
 from test_manager.result_parser import Parser
@@ -22,30 +22,23 @@ class Main(object):
 
 class AfterTest(object):
     def __init__(self):
-        self.mysql = MySQL()
-        self.conf = ConfigReader()
+        self.config = ConfigReader()
+        self.db = DatabaseManager()
         self.parser = Parser()
 
-    def _create_query(self, test_name: str) -> str:
-        return_string = ''
-        test_name = test_name.lower()
-        if test_name == 'csw':
-            return_string = ''
-        elif test_name == 'unittest':
-            return_string = 'INSERT INTO UNITTEST(PROJECT_NAME, BUILD_NUMBER, TEST_TOOL, SUCCESS, FAIL, SKIP) VALUES(\'IRIS-E2E\', )'
-        elif test_name == 'apitest':
-            pass
-        elif test_name == 'e2etest':
-            pass
-
-        return return_string
-
-    def parse_test_result(self, test_name) -> dict:
-        file_type = self.conf.get_report_info(test_name)['type']
-        test_tool = self.conf.get_test_tool(test_name)['uses']
-        result = self.parser.parse(kind=test_name, file_type=file_type, test_tool=test_tool)
-        pretty_print(result)
-        return result
+    def parse(self, test_name, db, build_number):
+        report_conf = self.config.get_report_info(test_name=test_name)
+        test_tool = self.config.get_test_tool(test_name=test_name)
+        test_result = self.parser.parse(kind=test_name, file_type=report_conf['type'], test_tool=test_tool['uses'])
+        if db is not None and build_number is not None:
+            test_result['build_number'] = build_number
+            self.db.insert_test_result(
+                test_name,
+                test_result,
+                db
+            )
+        else:
+            pretty_print(test_result)
 
 
 class Pipeline(object):
@@ -54,16 +47,14 @@ class Pipeline(object):
         self.test = Main()
         self.after_test = AfterTest()
 
-    def setting(self, ext):
+    def setting(self, ext: str):
         self.conf.read_config_file(ext)
 
-    def run(self, test_name):
+    def run(self, test_name: str):
         self.test.run(test_name)
 
-    def parse(self, test_name, db=False):
-        result = self.after_test.parse_test_result(test_name)
-        if db:
-            pass
+    def parse(self, test_name: str, db=None, build_number=None):
+        self.after_test.parse(test_name=test_name, db=db, build_number=build_number)
 
 
 if __name__ == "__main__":
