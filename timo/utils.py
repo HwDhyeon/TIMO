@@ -34,11 +34,11 @@ def pretty_print(obj: Any) -> NoReturn:
             print('│{key:^15}│{value:^15}│'.format(key=key, value=value))
         print('└' + '―' * 15 + '┴' + '―' * 15 + '┘')
 
-    if type(obj) is dict:
+    if equals(type(obj), dict, deep=True):
         print('┌' + '―' * 15 + '┬' + '―' * 15 + '┐')
         print('│      key      │     value     │')
         _print()
-    elif type(obj) is list or type(obj) is tuple or type(obj) is set:
+    elif equals(type(obj), list, deep=True) or equals(type(obj), tuple, deep=True) or equals(type(obj), set, deep=True):
         obj = dict(zip([x for x in range(len(obj))], obj))
         print('┌' + '―' * 15 + '┬' + '―' * 15 + '┐')
         print('│     index     │     value     │')
