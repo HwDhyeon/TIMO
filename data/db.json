@@ -1,0 +1,22 @@
+{
+    "mysql": {
+        "host": "192.168.100.180",
+        "port": 3302,
+        "user": "root",
+        "password": "hello.root",
+        "db": "cicd_result",
+        "charset": "utf8"
+    },
+    "oracle": {
+        "host": "",
+        "port": "",
+        "user": "",
+        "password": ""
+    },
+    "mongodb": {
+        "host": "",
+        "port": "",
+        "user": "",
+        "password": ""
+    }
+}
