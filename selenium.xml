@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites name="jest tests" tests="6" failures="0" time="83.212">
+  <testsuite name="CLUSTER-DB-TABLESPACE1" errors="0" failures="0" skipped="0" timestamp="2020-07-08T00:52:50" time="82.983" tests="6">
+    <testcase classname="CLUSTER-DB-TABLESPACE1 01_FILEBROWSER_MAIN_HDFS_CHECK_THE_PATH" name="CLUSTER-DB-TABLESPACE1 01_FILEBROWSER_MAIN_HDFS_CHECK_THE_PATH" time="10.06">
+    </testcase>
+    <testcase classname="CLUSTER-DB-TABLESPACE1 02_FILEBROWSER_MAIN_HDFS_CREATE_NEW_FOLDER" name="CLUSTER-DB-TABLESPACE1 02_FILEBROWSER_MAIN_HDFS_CREATE_NEW_FOLDER" time="12.193">
+    </testcase>
+    <testcase classname="CLUSTER-DB-TABLESPACE1 03_FILEBROWSER_MAIN_HDFS_CHECK_SEARCH" name="CLUSTER-DB-TABLESPACE1 03_FILEBROWSER_MAIN_HDFS_CHECK_SEARCH" time="11.082">
+    </testcase>
+    <testcase classname="CLUSTER-DB-TABLESPACE1 05_FILEBROWSER_MAIN_HDFS_DELETE_FOLDER" name="CLUSTER-DB-TABLESPACE1 05_FILEBROWSER_MAIN_HDFS_DELETE_FOLDER" time="26.412">
+    </testcase>
+    <testcase classname="CLUSTER-DB-TABLESPACE1 11_FILEBROWSER_MAIN_HDFS_CHECK_REFRESH" name="CLUSTER-DB-TABLESPACE1 11_FILEBROWSER_MAIN_HDFS_CHECK_REFRESH" time="13.861">
+    </testcase>
+    <testcase classname="CLUSTER-DB-TABLESPACE1 99_LOGIN" name="CLUSTER-DB-TABLESPACE1 99_LOGIN" time="7.449">
+    </testcase>
+  </testsuite>
+</testsuites>
