@@ -29,7 +29,14 @@ pipeline {
         stage("Coverage") {
             steps {
                 sh "python timo/core.py run Coverage"
+                sh "python timo/core.py parse Coverage"
                 cobertura coberturaReportFile: '**/coverage.xml', enableNewApi: true
+            }
+        }
+        stage("E2E") {
+            steps {
+                sh "python timo/core.py parse E2Etest"
+                junit 'selenium.xml'
             }
         }
     }
