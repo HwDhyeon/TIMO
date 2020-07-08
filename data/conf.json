@@ -30,11 +30,11 @@
             "run": [
                 "coverage run timo/tests/test_database/test_mysql.py",
                 "coverage report",
-                "coverage xml"
+                "coverage html"
             ],
             "report": {
-                "type": "xml",
-                "path": "path/to/report/file.xml"
+                "type": "html",
+                "path": "htmlcov/index.html"
             }
         },
         "APItest": {
@@ -54,8 +54,8 @@
                 "selenium-side-runner -c \"goog:chromeOptions.args=[headless,no-sandbox] browserName=chrome\" --filter All /root/IRIS-E2E/IRIS-E2E/_ComprehensiveTest.side --output-directory=/root/IRIS-E2E/qa-report --output-format=junit >> temp.txt"
             ],
             "report": {
-                "type": "none",
-                "path": "none"
+                "type": "xml",
+                "path": "selenium.xml"
             }
         }
     },
