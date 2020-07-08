@@ -11,7 +11,7 @@ WORKDIR /usr/src/app/TIMO
 COPY . .
 
 # import 오류를 막기 위해 TIMO/timo를 PYTHONPATH로 등록
-ENV PYTHONPATH=/usr/src/app/TIMO/timo;${PYTHONPATH}
+ENV PYTHONPATH=/usr/src/app/TIMO/timo
 
 # ubuntu 의존성 패키지 설치
 RUN apt update && apt upgrade -y
