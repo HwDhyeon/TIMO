@@ -1,7 +1,9 @@
 from file_manager.config_reader import ConfigReader
 from exception import UnknownTestTestToolError
+from test_manager.tools.coverage import CoverageParser
 from test_manager.tools.flake8 import Flake8Parser
 from test_manager.tools.jacoco import JacocoParser
+from test_manager.tools.selenium import SeleniumParser
 from test_manager.tools.surefire import SurefireParser
 from test_manager.tools.unittest import UnittestParser
 from typing import NoReturn
@@ -18,6 +20,8 @@ class Parser(object):
         self.unittest = UnittestParser()
         self.jacoco = JacocoParser()
         self.flake8 = Flake8Parser()
+        self.coverage = CoverageParser()
+        self.selenium = SeleniumParser()
 
     def _csw(self) -> dict:
         """
@@ -60,6 +64,8 @@ class Parser(object):
 
         if self.test_tool == 'jacoco':
             result = self.jacoco.parse(path=self.path, file_type=self.file_type)
+        elif self.test_tool == 'coverage':
+            result = self.coverage.parse(path=self.path, file_type=self.file_type)
         else:
             raise UnknownTestTestToolError
 
@@ -84,7 +90,9 @@ class Parser(object):
                 dict: Test result
         """
 
-        result = {}
+        if self.test_tool == 'selenium':
+            result = self.selenium.parse(path=self.path, file_type=self.file_type)
+
         return result
 
     def parse(self, kind: str, file_type: str, test_tool: str) -> dict:
