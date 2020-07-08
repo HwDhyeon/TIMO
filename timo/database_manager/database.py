@@ -33,7 +33,7 @@ class DatabaseManager(object):
 
             Returns:
                 str: Generated SQL query statement.
-        """        
+        """
 
         test_name = test_name.lower()
         project_name = self.config.get_project_name()
