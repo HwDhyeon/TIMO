@@ -30,11 +30,11 @@
             "run": [
                 "coverage run timo/tests/test_database/test_mysql.py",
                 "coverage report",
-                "coverage html"
+                "coverage xml"
             ],
             "report": {
-                "type": "html",
-                "path": "htmlcov/index.html"
+                "type": "xml",
+                "path": "coverage.xml"
             }
         },
         "APItest": {
