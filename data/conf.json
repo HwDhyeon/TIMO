@@ -1,49 +1,62 @@
 {
-    "project-name": "foo",
+    "project-name": "TIMO",
     "version": "v0.0.1",
     "Tests": {
         "CSW": {
             "uses": "flake8",
             "with": "default",
             "run": [
-                "flake8 --ignore=E501 src --output-file=flake8-report.txt"
-            ]
+                "flake8 timo/ --ignore=E501 --exclude=__init__.py --output-file=flake8.txt"
+            ],
+            "report": {
+                "type": "txt",
+                "path": "flake8.txt"
+            }
         },
         "Unittest": {
             "uses": "unittest",
             "with": "default",
             "run": [
-                "python -m unittest A/foo.py",
-                "python -m unittest B/foo.py",
-                "python -m unittest C/foo.py"
-            ]
+                "python timo/tests/test_database/test_mysql.py"
+            ],
+            "report": {
+                "type": "html",
+                "path": "path/to/report/file.html"
+            }
         },
         "Coverage": {
-            "uses": "unittest",
+            "uses": "coverage",
             "with": "default",
             "run": [
-                "python -m unittest A/foo.py",
-                "python -m unittest B/foo.py",
-                "python -m unittest C/foo.py"
-            ]
+                "coverage run timo/tests/test_database/test_mysql.py",
+                "coverage report",
+                "coverage xml"
+            ],
+            "report": {
+                "type": "xml",
+                "path": "path/to/report/file.xml"
+            }
         },
         "APItest": {
-            "uses": "unittest",
+            "uses": "",
             "with": "default",
             "run": [
-                "python -m unittest A/foo.py",
-                "python -m unittest B/foo.py",
-                "python -m unittest C/foo.py"
-            ]
+            ],
+            "report": {
+                "type": "",
+                "path": ""
+            }
         },
         "E2Etest": {
-            "uses": "unittest",
+            "uses": "selenium",
             "with": "default",
             "run": [
-                "python -m unittest A/foo.py",
-                "python -m unittest B/foo.py",
-                "python -m unittest C/foo.py"
-            ]
+                "selenium-side-runner -c \"goog:chromeOptions.args=[headless,no-sandbox] browserName=chrome\" --filter All /root/IRIS-E2E/IRIS-E2E/_ComprehensiveTest.side --output-directory=/root/IRIS-E2E/qa-report --output-format=junit >> temp.txt"
+            ],
+            "report": {
+                "type": "none",
+                "path": "none"
+            }
         }
     },
     "Score": {
