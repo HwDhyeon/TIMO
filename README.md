@@ -25,7 +25,7 @@ Clone this repository and build a Dockerfile.
 ```shell
 git clone https://github.com/HwDhyeon/TIMO.git
 cd TIMO
-docker build -f Dockerfile -t TIMO:latest .
+docker build -f Dockerfile -t timo:latest .
 ```
 
 ## Usege
