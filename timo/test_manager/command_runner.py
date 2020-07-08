@@ -4,12 +4,32 @@ from utils import equals
 from utils import get_command_black_list
 from typing import List
 from typing import NoReturn
+import platform
 import subprocess
 import shlex
 
 
 class CommandRunner(object):
     """Perform tests."""
+
+    def _convert_byte_to_string(self, byte_string: str) -> str:
+        """
+        Decodes Byte format strings and returns them as regular strings.
+
+            Parameters:
+                byte_string(b_str): String in Byte format.
+
+            Returns:
+                str: String decoded to utf-8 or cp949.
+                     If the execution environment is'Windows', it is converted to'cp949'.
+                     If the execution environment is'Linux' or 'Mac OS', it is converted to'utf-8'.
+        """
+
+        _os = platform.system()
+        if _os == 'Windows':
+            return byte_string.decode('CP949')
+        if _os == 'Linux' or _os == 'Darwin':
+            return byte_string.decode('utf-8')
 
     @timer
     def run(self, command: str) -> NoReturn:
@@ -27,7 +47,7 @@ class CommandRunner(object):
         popen = subprocess.Popen(args=shlex.split(command), shell=False, stderr=subprocess.STDOUT, stdout=subprocess.PIPE)  # 커맨드를 실행함
         stdout, _ = popen.communicate()  # stderr 메세지는 무시한다
         colorname = 'green'
-        result = stdout.decode('utf-8')
+        result = self._convert_byte_to_string(stdout)
         if result.replace('\n', '').replace('\r', '') == '':  # 출력값이 아무것도 없는 경우에는 'None'으로 변경한다
             result = 'None'
             colorname = 'red'
