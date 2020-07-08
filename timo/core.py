@@ -1,3 +1,4 @@
+from colors import color
 from database_manager.database import DatabaseManager
 from file_manager.config_reader import ConfigReader
 from test_manager.command_runner import CommandRunner
@@ -49,6 +50,13 @@ class Pipeline(object):
 
     def setting(self, ext: str):
         self.conf.read_config_file(ext)
+
+    def get(self, kind: str):
+        if (kind := kind.lower()) == 'name':
+            return "Project name: " + color(self.conf.get_project_name(), 'green')
+        if kind == 'version':
+            return ("Project version: %s\nTIMO version: %s"
+                    % (color(self.conf.get_project_version(), 'green'), color('alpha', 'orange')))
 
     def run(self, test_name: str):
         self.test.run(test_name)
