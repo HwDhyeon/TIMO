@@ -26,3 +26,11 @@ RUN pip install -r requirements.txt
 
 # 타임존 서울로 변경
 RUN sudo ln -sf /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+
+# 인코딩 방식 설정
+ENV LANG ko_KR.UTF-8
+ENV LANGUAGE ko_KR.UTF-8
+
+# timo 명령어 등록
+RUN echo -e '#!/bin/bash\npython ${PYTHONPATH}/core.py "$@"' > /usr/bin/timo && \
+    chmod +x /usr/bin/timo
