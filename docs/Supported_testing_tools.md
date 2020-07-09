@@ -14,19 +14,19 @@ _이 문서에서는 `TIMO`가 분석할 수 있는 테스트 도구의 목록�
 - flake8
 - eslint  
   경고: ESLint는 Output format으로 작성해야 합니다.  
-  `uses`에 **eslint**를 작성하면 작동하지 않습니다.
+  `type`에 **eslint**를 작성하면 작동하지 않습니다.
 
   작성 예시 (Output format이 `checkstyle`인 경우)
 
   ```json
   "CSW": {
-            "uses": "checkstyle",
+            "uses": "eslint",
             "with": "default",
             "run": [
                 "eslint --ext .js -f checkstyle -o checkstyle-result.xml src/"
             ],
             "report": {
-                "type": "xml",
+                "type": "checkstyle",
                 "path": "checkstyle-result.xml"
             }
         }
@@ -39,6 +39,8 @@ _이 문서에서는 `TIMO`가 분석할 수 있는 테스트 도구의 목록�
   - compact
   - junit
   - jslint-xml
+  - json
+  - json-with-metadata
 
 ### Unit test tool
 
