@@ -82,14 +82,14 @@ or json and yml
             }
         },
         "CSW_JS": {
-            "uses": "checkstyle",
+            "uses": "eslint",
             "with": "default",
             "run": [
                 "eslint --ext .js -f checkstyle -o checkstyle-result.xml src/"
             ],
             "report": {
-                "type": "xml",
-                "path": "checkstyle-result.xml"
+                "type": "checkstyle",
+                "path": "checkstyle.xml"
             }
         },
     }
