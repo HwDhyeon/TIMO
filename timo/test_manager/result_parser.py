@@ -38,6 +38,8 @@ class Parser(object):
             result = self.flake8.parse(path=self.path, file_type=self.file_type)
         elif self.test_tool == 'eslint':
             result = self.eslint.parse(path=self.path, file_type=self.file_type)
+        else:
+            raise UnknownTestTestToolError
 
         return result
 
