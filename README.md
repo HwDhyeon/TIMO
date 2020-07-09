@@ -149,9 +149,9 @@ or `make run test=CSW`
 ```shell
 $ python ./timo/core.py parse --test_name=CSW
 ┌―――――――――┬―――――――――┐
-│      key      │     value     │
+│   key   │  value  │
 │―――――――――┼―――――――――│
-│    warning    │      51       │
+│ warning │   51    │
 └―――――――――┴―――――――――┘
 ```
 
