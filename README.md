@@ -1,5 +1,11 @@
 # TIMO
 
+![rate](https://img.shields.io/github/languages/top/hwdhyeon/timo)  
+![reposize](https://img.shields.io/github/repo-size/hwdhyeon/timo)  
+![lastcommit](https://img.shields.io/github/last-commit/hwdhyeon/timo)  
+![coverage](https://img.shields.io/badge/coverage-69%25-yellowgreen)  
+![markdownlint](https://img.shields.io/badge/markdown%20lint-pass-brightgreen)
+
 _`TIMO` stands for `Test integration management tool` and is a tool that performs various tests and collects the results into one result._
 
 _`TIMO`는 `테스트 종합 관리도구`의 약자로 각종 테스트를 수행하고 그 결과를 취합하는 도구입니다._
