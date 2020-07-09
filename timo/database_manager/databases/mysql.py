@@ -40,8 +40,6 @@ class MySQL(object):
             self.cursor: pymysql.cursors.Cursor = self.conn.cursor()
         except Exception as e:
             colored_print(e, 'red')
-            # self.cursor.close()
-            # self.conn.close()
         else:
             colored_print('Done', 'green')
 
@@ -99,6 +97,7 @@ class MySQL(object):
                     bool: Returns True if saved as a file, False otherwise.
 
             """
+
             def _save(path: str, data: Any) -> NoReturn:
                 """
                 Save the input data in the designated format.
@@ -107,6 +106,7 @@ class MySQL(object):
                         path(str): Where the file will be saved
                         data(any): Raw data to be saved to file
                 """
+
                 ext: str = path.split('.')[-1]
                 colored_print('Save query result...', 'yellow')
                 colored_print(f'File ext: {ext}', 'yellow', end='\n\n')
@@ -127,6 +127,7 @@ class MySQL(object):
                     Returns:
                         list(dict): A list converted to a dictionary of type { column: value }
                 """
+
                 r = []
                 for row in rows:
                     r.append(dict(zip(columns, row)))
@@ -186,5 +187,5 @@ if __name__ == "__main__":
         BUILD_NO = (SELECT MAX(BUILD_NO) FROM JENKINS_BUILD_RESULT WHERE PROJECT_NM = 'IRIS-E2E-SAAS')"""
     db: MySQL = MySQL()
     db.open_DB_session()
-    db.send_query(sql=sql, type='select', save='tess')
+    db.send_query(sql=sql, type='select', save='yaml')
     db.close_DB_session()
