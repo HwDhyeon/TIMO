@@ -53,6 +53,46 @@ docker build -f Dockerfile -t timo:latest .
 
 or json and yml
 
+### How to write conf file
+
+`Tests`의 모든 오브젝트는 각각의 스테이지가 됩니다. 이름은 자유롭게 설정할 수 있지만 어떤 목적의 테스트인지는 이름에 무조건 포함되어야 합니다.
+
+예를 들면 아래와 같습니다.
+
+```json
+{
+    "project-name": "TIMO",
+    "version": "v0.0.1",
+    "Tests": {
+        "CSW_Python": {
+            "uses": "flake8",
+            "with": "default",
+            "run": [
+                "flake8 timo/ --ignore=E501 --exclude=__init__.py --output-file=flake8.txt"
+            ],
+            "report": {
+                "type": "txt",
+                "path": "flake8.txt"
+            }
+        },
+        "CSW_JS": {
+            "uses": "checkstyle",
+            "with": "default",
+            "run": [
+                "eslint --ext .js -f checkstyle -o checkstyle-result.xml src/"
+            ],
+            "report": {
+                "type": "xml",
+                "path": "checkstyle-result.xml"
+            }
+        },
+    }
+}
+```
+
+하나의 프로젝트에서 여러가지 테스트 도구를 사용하는 경우 위처럼 작성해야 합니다.  
+예시: [지원되는 테스트 도구 목록](docs/Supported_testing_tools.md)
+
 #### How to write db.json
 
 **TIMO**가 데이터베이스와 연동을 하기 위해서는 `data/db.json` 파일이 작성되어 있어야 합니다.  
