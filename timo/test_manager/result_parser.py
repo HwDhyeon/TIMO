@@ -1,6 +1,7 @@
 from file_manager.config_reader import ConfigReader
 from exception import UnknownTestTestToolError
 from test_manager.tools.coverage import CoverageParser
+from test_manager.tools.eslint import ESLintParser
 from test_manager.tools.flake8 import Flake8Parser
 from test_manager.tools.jacoco import JacocoParser
 from test_manager.tools.selenium import SeleniumParser
@@ -22,6 +23,7 @@ class Parser(object):
         self.flake8 = Flake8Parser()
         self.coverage = CoverageParser()
         self.selenium = SeleniumParser()
+        self.eslint = ESLintParser()
 
     def _csw(self) -> dict:
         """
@@ -34,6 +36,8 @@ class Parser(object):
         result = {}
         if self.test_tool == 'flake8':
             result = self.flake8.parse(path=self.path, file_type=self.file_type)
+        elif self.test_tool == 'eslint':
+            result = self.eslint.parse(path=self.path, file_type=self.file_type)
 
         return result
 
@@ -118,15 +122,15 @@ class Parser(object):
             colored_print('Where is it?', 'red')
             raise FileNotFoundError
 
-        if (kind := kind.lower()) == 'csw':
+        if 'csw' in (kind := kind.lower()):
             result = self._csw()
-        elif kind == 'unittest':
+        elif 'unittest' in kind:
             result = self._unittest()
-        elif kind == 'coverage':
+        elif 'coverage' in kind:
             result = self._coverage()
-        elif kind == 'apitest':
+        elif 'apitest' in kind:
             result = self._apitest()
-        elif kind == 'e2etest':
+        elif 'e2etest' in kind:
             result = self._e2etest()
 
         return result
