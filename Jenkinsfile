@@ -9,13 +9,13 @@ pipeline {
     stages {
         stage("Initialize") {
             steps {
-                sh "python timo/core.py setting json"
+                sh "timo setting json"
             }
         }
         stage("CSW") {
             steps {
-                sh "python timo/core.py run CSW"
-                sh "python timo/core.py parse CSW"
+                sh "timo run CSW"
+                sh "timo parse CSW"
                 recordIssues enabledForFailure: true, aggregatingResults: false, tools: [
                     flake8(pattern: "**/flake8.txt", name: "Python codestyle")
                 ]
@@ -23,13 +23,13 @@ pipeline {
         }
         stage("Unittest") {
             steps {
-                sh "python timo/core.py run Unittest"
+                sh "timo run Unittest"
             }
         }
         stage("Coverage") {
             steps {
-                sh "python timo/core.py run Coverage"
-                sh "python timo/core.py parse Coverage"
+                sh "timo run Coverage"
+                sh "timo parse Coverage"
                 cobertura coberturaReportFile: '**/coverage.xml', enableNewApi: true
             }
         }
