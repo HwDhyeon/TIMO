@@ -19,6 +19,8 @@ Clone this repository
 
 ```shell
 git clone https://github.com/HwDhyeon/TIMO.git
+cd TIMO
+./setup_env.sh
 ```
 
 ### In Docker
