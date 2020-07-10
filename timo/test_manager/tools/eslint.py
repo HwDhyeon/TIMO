@@ -14,7 +14,7 @@ class ESLintParser(object):
             return {
                 'warning': len(xml['checkstyle']['file']['error'])
             }
-        
+
         def _codeframe() -> dict:
             txt = self.reader.read_raw_file(path)
             result_line = txt.splitlines()[-2]

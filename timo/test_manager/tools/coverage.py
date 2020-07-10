@@ -8,7 +8,7 @@ class CoverageParser(object):
         self.reader = Reader()
 
     def parse(self, path: str, file_type: str) -> dict:
-        return_val = { 'test_val': 0 }
+        return_val = {'test_val': 0}
         if equals(file_type, 'html'):
             coverage_data = self.reader.read_html_file(path)
             rate = int(coverage_data['html']['body']['div'][2]['table']['tfoot']['tr']['td'][4]['text'].rstrip('%'))

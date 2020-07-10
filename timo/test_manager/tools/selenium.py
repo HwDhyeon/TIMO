@@ -23,4 +23,3 @@ class SeleniumParser(object):
             colored_print('Sorry, there is no information you can get from this type of file.', 'orange')
 
         return return_val
-

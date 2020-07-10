@@ -13,12 +13,11 @@ class Oracle(object):
     @timer
     def open_DB_session(self) -> NoReturn:
         def _read_DB_info() -> dict:
-            return self.reader.read_json_file( os.getcwd() + '/data/db.json')
+            return self.reader.read_json_file(os.getcwd() + '/data/db.json')
 
         try:
             colored_print('Connecting DB...', 'yellow')
             self.db_info = _read_DB_info()['oracle']
-            
             db_host = self.db_info['host'] + '@' + self.db_info['port'] + '/' + self.db_info['sid']
             self.conn = cx_Oracle.connect(
                 self.db_info['user'],
