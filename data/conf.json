@@ -17,18 +17,19 @@
             "uses": "unittest",
             "with": "default",
             "run": [
-                "python timo/tests/test_database/test_mysql.py"
+                "python timo/tests/test_sample.py",
+                "python timo/tests/test_mysql.py"
             ],
             "report": {
                 "type": "html",
-                "path": "path/to/report/file.html"
+                "path": "unittest-report"
             }
         },
         "Coverage": {
             "uses": "coverage",
             "with": "default",
             "run": [
-                "coverage run timo/tests/test_database/test_mysql.py",
+                "coverage run timo/tests/test_mysql.py",
                 "coverage report",
                 "coverage xml"
             ],
