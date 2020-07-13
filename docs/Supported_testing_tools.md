@@ -20,16 +20,16 @@ _이 문서에서는 `TIMO`가 분석할 수 있는 테스트 도구의 목록�
 
   ```json
   "CSW": {
-            "uses": "eslint",
-            "with": "default",
-            "run": [
-                "eslint --ext .js -f checkstyle -o checkstyle-result.xml src/"
-            ],
-            "report": {
-                "type": "checkstyle",
-                "path": "checkstyle-result.xml"
-            }
-        }
+      "uses": "eslint",
+      "with": "default",
+      "run": [
+          "eslint --ext .js -f checkstyle -o checkstyle-result.xml src/"
+      ],
+      "report": {
+          "type": "checkstyle",
+          "path": "checkstyle-result.xml"
+      }
+  }
   ```
 
   이 아래로는 지원되는 Output format 목록입니다.
@@ -45,6 +45,44 @@ _이 문서에서는 `TIMO`가 분석할 수 있는 테스트 도구의 목록�
 ### Unit test tool
 
 - surefire
+- unittest  
+  경고: Python Unittest는 HTML 리포트를 사용하는 경우 path를 디렉토리 이름으로 작성해야 합니다.  
+  파일 이름을 적을 경우 오류가 발생합니다.
+  XML 리포트를 사용하는 경우에는 상관 없습니다.
+
+  작성 예시 (`type`이 `html`이고 `path`가 `unittest-report`인 경우)
+
+  ```json
+  "Unittest": {
+      "uses": "unittest",
+      "with": "default",
+      "run": [
+          "python timo/tests/test_sample.py",
+          "python timo/tests/test_mysql.py"
+      ],
+      "report": {
+          "type": "html",
+          "path": "unittest-report"
+      }
+  }
+  ```
+
+  작성 예시(`type`이 `xml`인 경우)
+
+  ```json
+  "Unittest": {
+      "uses": "unittest",
+      "with": "default",
+      "run": [
+          "python timo/tests/test_sample.py",
+          "python timo/tests/test_mysql.py"
+      ],
+      "report": {
+          "type": "xml",
+          "path": "unittest-report.xml"
+      }
+  }
+  ```
 
 ### Code coverage tool
 
