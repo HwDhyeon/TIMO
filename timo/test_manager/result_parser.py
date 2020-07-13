@@ -119,7 +119,7 @@ class Parser(object):
         self.file_type = file_type
         self.test_tool = test_tool.lower()
 
-        if not os.path.isfile(self.path):
+        if not os.path.isfile(self.path) and not os.path.isdir(self.path):
             colored_print(f'We can\'t  find {self.path}.', 'red')
             colored_print('Where is it?', 'red')
             raise FileNotFoundError
