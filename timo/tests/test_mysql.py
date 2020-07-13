@@ -1,5 +1,6 @@
 from database_manager.databases.mysql import MySQL
 import HtmlTestRunner
+import xmlrunner
 import unittest
 import json
 import os
@@ -46,4 +47,9 @@ class TestMySQL(unittest.TestCase):
 
 
 if __name__ == "__main__":
-    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='./'))
+    unittest.main(testRunner=HtmlTestRunner.HTMLTestRunner(output='unittest-report'))
+    #  with open(file='unittest-xml-report.xml', mode='wb') as output:
+    #     unittest.main(
+    #         testRunner=xmlrunner.XMLTestRunner(output=output),
+    #         failfast=False, buffer=False, catchbreak=False
+    #     )
