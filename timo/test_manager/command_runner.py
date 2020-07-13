@@ -51,7 +51,8 @@ class CommandRunner(object):
         if result.replace('\n', '').replace('\r', '') == '':  # 출력값이 아무것도 없는 경우에는 'None'으로 변경한다
             result = 'None'
             colorname = 'red'
-        colored_print(f'Out: {result}', colorname)  # 커맨드 실행결과 출력
+        colored_print('Out:', colorname, end='')
+        colored_print(f'{result}', 'white')  # 커맨드 실행결과 출력
 
     def run_all(self, command_list: List):
         """
