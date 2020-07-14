@@ -32,5 +32,5 @@ ENV LANG ko_KR.UTF-8
 ENV LANGUAGE ko_KR.UTF-8
 
 # timo 명령어 등록
-RUN echo -e '#!/bin/bash\npython ${PYTHONPATH}/core.py "$@"' > /usr/bin/timo && \
+RUN echo '#!/bin/bash\npython ${PYTHONPATH}/core.py "$@"' > /usr/bin/timo && \
     chmod +x /usr/bin/timo
