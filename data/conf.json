@@ -17,7 +17,6 @@
             "uses": "unittest",
             "with": "default",
             "run": [
-                "python timo/tests/test_sample.py",
                 "python timo/tests/test_mysql.py"
             ],
             "report": {
