@@ -10,6 +10,6 @@ def timer(original_func):
         start_time: float = time.time()
         result = original_func(*args, **kwargs)
         end_time: float = time.time()
-        print('Time spending: {:.2f} seconds'.format(end_time - start_time), end='\n\n')
+        print('Time spending: {:.2f} seconds ✔'.format(end_time - start_time), end='\n\n')
         return result
     return wrapper_func
