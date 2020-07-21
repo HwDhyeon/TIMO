@@ -1,6 +1,7 @@
 from colors import color
 from database_manager.database import DatabaseManager
 from file_manager.config_reader import ConfigReader
+from score_manager.score_manager import ScoreCalculator
 from test_manager.command_runner import CommandRunner
 from test_manager.result_parser import Parser
 from typing import NoReturn
@@ -26,6 +27,7 @@ class AfterTest(object):
         self.config = ConfigReader()
         self.db = DatabaseManager()
         self.parser = Parser()
+        self.score = ScoreCalculator()
 
     def parse(self, test_name, db, build_number):
         report_conf = self.config.get_report_info(test_name=test_name)
@@ -54,9 +56,11 @@ class Pipeline(object):
     def get(self, kind: str):
         if (kind := kind.lower()) == 'name':
             return "Project name: " + color(self.conf.get_project_name(), 'green')
-        if kind == 'version':
+        elif kind == 'version':
             return ("Project version: %s\nTIMO version: %s"
                     % (color(self.conf.get_project_version(), 'green'), color('alpha', 'orange')))
+        elif kind == 'score':
+            self.after_test.score.calculate()
 
     def run(self, test_name: str):
         self.test.run(test_name)
