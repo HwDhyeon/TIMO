@@ -1,5 +1,9 @@
 # TIMO
 
+<p align="center">
+  <img src="https://user-images.githubusercontent.com/37629503/88120645-5ff14300-cbfe-11ea-98e0-c42b00f524c6.png" />
+</p>
+
 ![rate](https://img.shields.io/github/languages/top/hwdhyeon/timo)  
 ![reposize](https://img.shields.io/github/repo-size/hwdhyeon/timo)  
 ![lastcommit](https://img.shields.io/github/last-commit/hwdhyeon/timo)  
