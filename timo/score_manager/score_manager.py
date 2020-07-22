@@ -13,7 +13,6 @@ class ScoreCalculator(object):
     def __init__(self):
         self.conf = ConfigReader()
         self.parser = Parser()
-        self.score_set = self._get_score_set()
         self.r = {
             'CSW': 0,
             'Unittest': 0,
@@ -73,6 +72,7 @@ class ScoreCalculator(object):
 
     @timer
     def calculate(self) -> dict:
+        self.score_set = self._get_score_set()
         score = {
             'CSW': {'score': 0, 'count': 0},
             'Unittest': {'score': 0, 'count': 0},
