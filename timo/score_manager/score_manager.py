@@ -74,26 +74,11 @@ class ScoreCalculator(object):
     @timer
     def calculate(self) -> dict:
         score = {
-            'CSW': {
-                'score': 0,
-                'count': 0
-            },
-            'Unittest': {
-                'score': 0,
-                'count': 0
-            },
-            'Coverage': {
-                'score': 0,
-                'count': 0
-            },
-            'APItest': {
-                'score': 0,
-                'count': 0
-            },
-            'E2Etest': {
-                'score': 0,
-                'count': 0
-            },
+            'CSW': {'score': 0, 'count': 0},
+            'Unittest': {'score': 0, 'count': 0},
+            'Coverage': {'score': 0, 'count': 0},
+            'APItest': {'score': 0, 'count': 0},
+            'E2Etest': {'score': 0, 'count': 0},
         }
         r = self._get_test_results()
         def csw(data: dict) -> float:
@@ -148,7 +133,7 @@ class ScoreCalculator(object):
         colored_print('-' * 19, colorname='white')
         for test, value in score.items():
             _score = value['score'] / value['count'] if value['count'] != 0 else 0
-            fstr = f'{_score * 10:>6.2f}' if _score != 0 else color('❗{:6}'.format('None'), 'red')
+            fstr = f'{_score * 10:>6.2f}' if _score != 0 else '{:>5}'.format('❌')
             colored_print(f'{test:<10}', colorname='white', end='')
             colored_print(' → ', colorname='cyan', end='')
             colored_print(f'{fstr}', colorname='green')
