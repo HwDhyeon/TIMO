@@ -15,10 +15,7 @@ ENV PYTHONPATH=/usr/src/app/TIMO/timo
 
 # ubuntu 의존성 패키지 설치
 RUN apt update && apt upgrade -y
-RUN apt install -y \
-    git \
-    make \
-    sudo
+RUN xargs apt install -y < requirements.sys
 
 # Python 의존성 패키지 설치
 RUN pip install --upgrade pip
