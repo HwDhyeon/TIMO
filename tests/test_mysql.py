@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 from database_manager.databases.mysql import MySQL
 import HtmlTestRunner
 import xmlrunner
