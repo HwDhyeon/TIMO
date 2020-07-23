@@ -12,176 +12,100 @@
 
 _`TIMO` stands for `Test integration management tool` and is a tool that performs various tests and collects the results into one result._
 
-_`TIMO`는 `테스트 종합 관리도구`의 약자로 각종 테스트를 수행하고 그 결과를 취합하는 도구입니다._
-
 ## Installation
 
-### In Host
+**Requirements**
 
-Clone this repository  
-이 저장소를 클론하십시오
+- Python3.8+
 
-```shell
-git clone https://github.com/HwDhyeon/TIMO.git
-cd TIMO
-./setup_env.sh
+### Common
+
+Clone this repository using Git.
+
+```bash
+> git clone https://github.com/HwDhyeon/TIMO.git
 ```
 
-### In Docker
+Then go into the TIMO folder.
 
-_This is the method we recommend._
-
-Clone this repository and build a Dockerfile.  
-먼저 이 저장소를 클론하고 도커파일을 빌드하십시오.
-
-```shell
-git clone https://github.com/HwDhyeon/TIMO.git
-cd TIMO
-docker build -f Dockerfile -t timo:latest .
+```bash
+> cd TIMO
 ```
 
-## Usege
+Use the package manager [pip](https://pip.pypa.io/en/stable/) to install required packages.
 
-### Setting
-
-이 프로젝트는 data폴더 안에있는 conf 파일을 읽어서 실행됩니다.  
-현재 conf 파일은 세 가지 형태를 지원합니다. 지원하는 목록은 다음과 같습니다.
-
-- yaml
-- yml
-- json
-
-파일 이름은 반드시 `conf.yaml`(또는 `conf.yml`) 이거나 `conf.json` 이어야 합니다. 아니면 두 가지 파일을 모두 사용할 수도 있습니다. 그 방법은 아래에서 설명하겠습니다.
-
-#### How to use two conf files
-
-이 프로그램은 처음 실행 때 반드시 conf 파일이 어떤 형태인지 지정해주어야 합니다. 당신은 그저 `setting` 명령어를 사용하기만 하면 프로그램이 자동으로 당신의 conf 파일을 탐색하고 찾아낸 파일의 형식을 data 폴더 안의 `configpath.json`에 저장합니다. 그래서 이 파일을 미리 구성해놓고 원하는 타이밍에 파일을 수정한다면 두가지 conf 파일을 사용할 수 있습니다. `configpath.json` 파일의 형태는 다음과 같습니다.
-
-```json
-{
-    "ConfType": "yaml"
-}
+```bash
+> pip install -r requirements.txt
 ```
 
-or json and yml
+### Windows
 
-### How to write conf file
+Run setup_env.bat
 
-`Tests`의 모든 오브젝트는 각각의 스테이지가 됩니다. 이름은 자유롭게 설정할 수 있지만 어떤 목적의 테스트인지는 이름에 무조건 포함되어야 합니다.
-
-예를 들면 아래와 같습니다.
-
-```json
-{
-    "project-name": "TIMO",
-    "version": "v0.0.1",
-    "Tests": {
-        "CSW_Python": {
-            "uses": "flake8",
-            "with": "default",
-            "run": [
-                "flake8 timo/ --ignore=E501 --exclude=__init__.py --output-file=flake8.txt"
-            ],
-            "report": {
-                "type": "txt",
-                "path": "flake8.txt"
-            }
-        },
-        "CSW_JS": {
-            "uses": "eslint",
-            "with": "default",
-            "run": [
-                "eslint --ext .js -f checkstyle -o checkstyle-result.xml src/"
-            ],
-            "report": {
-                "type": "checkstyle",
-                "path": "checkstyle.xml"
-            }
-        },
-    }
-}
+```cmd
+.\setup_env.bat
 ```
 
-하나의 프로젝트에서 여러가지 테스트 도구를 사용하는 경우 위처럼 작성해야 합니다.  
-예시: [지원되는 테스트 도구 목록](docs/Supported_testing_tools.md)
+### Unix(Linux, MacOS, ...)
 
-#### How to write db.json
+Run setup_env.sh
 
-**TIMO**가 데이터베이스와 연동을 하기 위해서는 `data/db.json` 파일이 작성되어 있어야 합니다.  
-데이터베이스별 작성 예시는 아래와 같습니다.
-
-```json
-{
-    "mysql": {
-        "host": "127.0.0.1",
-        "port": 3306,
-        "user": "root",
-        "password": "myroot",
-        "db": "mydatabase",
-        "charset": "utf8"
-    },
-    "oracle": {
-        "host": "127.0.0.1",
-        "port": "1521",
-        "user": "scott",
-        "password": "tiger"
-    },
-    "mongodb": {
-        "host": "127.0.0.1",
-        "port": "27017"
-    }
-}
-````
-
-_MariaDB를 사용하는 경우에는 MySQL로 작성해주세요 추후에 분리될 것입니다._
-
-## Command list
-
-`conf` 파일 세팅
-
-``` shell
-$ python timo/core.py setting --ext="yaml"
-We found new configuration file.
+```bash
+./setup-env.sh
 ```
 
-### Run test
+### Docker
 
-```shell
-$ python ./timo/core.py run --test_name=CSW
-Running CSW in now.
-Run: flake8 timo/ --ignore=E501 --exclude=__init__.py --output-file=flake8.txt
-Out: None
-Time spending: 0.74 seconds
+Build the image
+
+```bash
+> docker build -f Dockerfile -t timo:latest --compress --no-cache .
 ```
 
-or `make run test=CSW`
+Run container
 
-### Parsing test results
-
-```shell
-$ python ./timo/core.py parse --test_name=CSW
-┌―――――――――┬―――――――――┐
-│   key   │  value  │
-│―――――――――┼―――――――――│
-│ warning │   51    │
-└―――――――――┴―――――――――┘
+```bash
+> docker run -itd --name TIMO -w /root timo:latest
 ```
 
-or `make parse test=CSW`
+Enter the container
 
-### Insert test result to Database
-
-```shell
-$ python ./timo/core.py parse --test_name=CSW --db=mysql --build_number=3
-Connecting DB...
-Done
-Time spending: 0.03 seconds
-
-Sending INSERT query...
-Done
-Time spending: 0.01 seconds
+```bash
+> docker exec -it TIMO bash
 ```
 
-or `make insert test=CSW db=mysql build_number=3`
+Create a data folder and create a conf file in it.
 
-_**TIMO**가 자동으로 `db.json`파일을 읽어서 DB와 연동한다_
+```bash
+> mkdir data
+> touch conf.yaml
+```
+
+## Usage
+
+First, help TIMO recognize your conf file.
+
+```bash
+> timo setting <conf file extension>
+```
+
+And check your project information.
+
+```bash
+> timo get name
+Project name: TIMO
+
+> timo get version
+Project version: v1.0.0
+TIMO version: v0.0.1
+```
+
+## Contributing
+
+Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
+## License
+
+**[MIT License](https://choosealicense.com/licenses/mit/)**
