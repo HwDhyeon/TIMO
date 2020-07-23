@@ -1,12 +1,9 @@
-#-*- coding: utf-8 -*-
+# -*- coding: utf-8 -*-
 
-from collections import Counter
 from decorators import timer
 from file_manager.config_reader import ConfigReader
 from test_manager.result_parser import Parser
-from utils import color
 from utils import colored_print
-
 
 
 class ScoreCalculator(object):
@@ -21,7 +18,6 @@ class ScoreCalculator(object):
             'E2Etest': 0,
         }
 
-    
     def _refine_test_name(self, test_name: str) -> str:
         if 'CSW' in test_name:
             test_name = 'CSW'
@@ -48,9 +44,6 @@ class ScoreCalculator(object):
             key = self._refine_test_name(key)
             r[key] = float(value.rstrip('%')) * 0.01
         return r
-            
-
-
 
     def _get_test_results(self) -> list:
 
@@ -81,6 +74,7 @@ class ScoreCalculator(object):
             'E2Etest': {'score': 0, 'count': 0},
         }
         r = self._get_test_results()
+
         def csw(data: dict) -> float:
             score = (1 - (data['warning'] / 100))
             score = -1 if score < -1 else score
@@ -107,7 +101,6 @@ class ScoreCalculator(object):
             success_rate = data['success'] / total
             score = success_rate * self.score_set['E2Etest']
             return score
-
 
         for data in r:
             if data['name'] == 'CSW':
@@ -144,7 +137,6 @@ class ScoreCalculator(object):
         print()
 
         return res
-
 
 
 if __name__ == "__main__":
