@@ -63,7 +63,7 @@ class CommandRunner(object):
         """
 
         if equals(len(command_list), 0):
-            colored_print('No command found.', 'orage')
+            colored_print('No command found.', 'orange')
         else:
             for command in command_list:
                 self.run(command)
