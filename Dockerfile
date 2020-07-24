@@ -3,6 +3,7 @@ FROM python:3.8.1
 
 # root 유저로 실행
 USER root
+ENV HOME=/root
 
 # /usr/src/app/TIMO 디렉토리를 기본 디렉토리로 설정
 WORKDIR /usr/src/app/TIMO
@@ -11,7 +12,7 @@ WORKDIR /usr/src/app/TIMO
 COPY . .
 
 # import 오류를 막기 위해 TIMO/timo를 PYTHONPATH로 등록
-ENV PYTHONPATH=/usr/src/app/TIMO/timo
+ENV PYTHONPATH=/usr/src/app/TIMO
 
 # ubuntu 의존성 패키지 설치
 RUN apt update && apt upgrade -y
@@ -29,5 +30,7 @@ ENV LANG ko_KR.UTF-8
 ENV LANGUAGE ko_KR.UTF-8
 
 # timo 명령어 등록
-RUN echo '#!/bin/bash\npython ${PYTHONPATH}/core.py "$@"' > /usr/bin/timo && \
+RUN echo '#!/bin/bash\npython ${PYTHONPATH}/timo/core.py "$@"' > /usr/bin/timo && \
     chmod +x /usr/bin/timo
+
+WORKDIR /root
