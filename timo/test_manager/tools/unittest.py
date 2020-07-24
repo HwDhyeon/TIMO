@@ -1,4 +1,4 @@
-from file_manager.file_reader import Reader
+from timo.file_manager.file_reader import Reader
 import glob
 
 

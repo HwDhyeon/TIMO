@@ -1,9 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from decorators import timer
-from file_manager.config_reader import ConfigReader
-from test_manager.result_parser import Parser
-from utils import colored_print
+from timo.decorators import timer
+from timo.file_manager.config_reader import ConfigReader
+from timo.test_manager.result_parser import Parser
+from timo.utils import colored_print
 
 
 class ScoreCalculator(object):

@@ -1,14 +1,14 @@
-from file_manager.config_reader import ConfigReader
-from exception import UnknownTestTestToolError
-from test_manager.tools.coverage import CoverageParser
-from test_manager.tools.eslint import ESLintParser
-from test_manager.tools.flake8 import Flake8Parser
-from test_manager.tools.jacoco import JacocoParser
-from test_manager.tools.selenium import SeleniumParser
-from test_manager.tools.surefire import SurefireParser
-from test_manager.tools.unittest import UnittestParser
+from timo.file_manager.config_reader import ConfigReader
+from timo.exception import UnknownTestTestToolError
+from timo.test_manager.tools.coverage import CoverageParser
+from timo.test_manager.tools.eslint import ESLintParser
+from timo.test_manager.tools.flake8 import Flake8Parser
+from timo.test_manager.tools.jacoco import JacocoParser
+from timo.test_manager.tools.selenium import SeleniumParser
+from timo.test_manager.tools.surefire import SurefireParser
+from timo.test_manager.tools.unittest import UnittestParser
 from typing import NoReturn
-from utils import colored_print
+from timo.utils import colored_print
 import os
 
 

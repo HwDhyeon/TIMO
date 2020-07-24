@@ -1,4 +1,4 @@
-from utils import equals
+from timo.utils import equals
 from typing import Any
 import json
 import yaml

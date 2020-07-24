@@ -1,6 +1,6 @@
-from file_manager.file_reader import Reader
-from utils import colored_print
-from utils import equals
+from timo.file_manager.file_reader import Reader
+from timo.utils import colored_print
+from timo.utils import equals
 
 
 class CoverageParser(object):

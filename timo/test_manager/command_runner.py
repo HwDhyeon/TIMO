@@ -1,7 +1,7 @@
-from decorators import timer
-from utils import colored_print
-from utils import equals
-from utils import get_command_black_list
+from timo.decorators import timer
+from timo.utils import colored_print
+from timo.utils import equals
+from timo.utils import get_command_black_list
 from typing import List
 from typing import NoReturn
 import platform

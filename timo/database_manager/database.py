@@ -1,14 +1,14 @@
-from database_manager.databases import mariadb
-from database_manager.databases import mongodb
-from database_manager.databases import mysql
-from database_manager.databases import oracle
-from exception import UnknownDataError
-from exception import UnknownDatabaseError
-from file_manager.config_reader import ConfigReader
-from file_manager.file_reader import Reader
+from timo.database_manager.databases import mariadb
+from timo.database_manager.databases import mongodb
+from timo.database_manager.databases import mysql
+from timo.database_manager.databases import oracle
+from timo.exception import UnknownDataError
+from timo.exception import UnknownDatabaseError
+from timo.file_manager.config_reader import ConfigReader
+from timo.file_manager.file_reader import Reader
 from typing import NoReturn
-from utils import colored_print
-from utils import equals
+from timo.utils import colored_print
+from timo.utils import equals
 import os
 
 

@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 
 from colors import color
-from database_manager.database import DatabaseManager
-from file_manager.config_reader import ConfigReader
-from score_manager.score_manager import ScoreCalculator
-from test_manager.command_runner import CommandRunner
-from test_manager.result_parser import Parser
+from timo.database_manager.database import DatabaseManager
+from timo.file_manager.config_reader import ConfigReader
+from timo.score_manager.score_manager import ScoreCalculator
+from timo.test_manager.command_runner import CommandRunner
+from timo.test_manager.result_parser import Parser
 from typing import NoReturn
 from typing import Union
-from utils import colored_print
-from utils import pretty_print
+from timo.utils import colored_print
+from timo.utils import pretty_print
 import fire
 
 

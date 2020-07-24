@@ -1,7 +1,7 @@
-from decorators import timer
-from file_manager.file_reader import Reader
+from timo.decorators import timer
+from timo.file_manager.file_reader import Reader
 from typing import NoReturn
-from utils import colored_print
+from timo.utils import colored_print
 import cx_Oracle
 import os
 

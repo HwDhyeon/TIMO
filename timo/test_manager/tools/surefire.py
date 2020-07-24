@@ -4,10 +4,10 @@ Parse the results of tests conducted with the surefire plugin.
 http://maven.apache.org/surefire/maven-surefire-plugin/
 """
 
-from file_manager.file_reader import Reader
+from timo.file_manager.file_reader import Reader
 from typing import Dict
 from typing import NoReturn
-from utils import colored_print
+from timo.utils import colored_print
 
 
 class SurefireParser(object):

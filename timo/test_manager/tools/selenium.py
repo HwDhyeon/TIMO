@@ -1,5 +1,5 @@
-from file_manager.file_reader import Reader
-from utils import colored_print
+from timo.file_manager.file_reader import Reader
+from timo.utils import colored_print
 
 
 class SeleniumParser(object):

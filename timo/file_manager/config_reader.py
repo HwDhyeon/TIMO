@@ -1,12 +1,12 @@
 """Read and interpret the project configuration file."""
 
-from file_manager.file_reader import Reader
-from file_manager.file_writer import Writer
-from exception import FileExtensionError
+from timo.file_manager.file_reader import Reader
+from timo.file_manager.file_writer import Writer
+from timo.exception import FileExtensionError
 from typing import Dict
 from typing import List
 from typing import NoReturn
-from utils import colored_print
+from timo.utils import colored_print
 import os
 
 

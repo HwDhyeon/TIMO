@@ -1,13 +1,13 @@
 """Connect to MySQL and execute various queries."""
 
-from decorators import timer
+from timo.decorators import timer
 from typing import Any
 from typing import AnyStr
 from typing import Dict
 from typing import List
 from typing import NoReturn
 from typing import Tuple
-from utils import colored_print
+from timo.utils import colored_print
 import csv
 import json
 import os

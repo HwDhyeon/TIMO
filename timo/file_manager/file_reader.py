@@ -2,7 +2,7 @@
 
 from bs2json import bs2json
 from bs4 import BeautifulSoup  # HTML 파싱 모듈
-from exception import FileExtensionError
+from timo.exception import FileExtensionError
 from typing import Dict
 from typing import NoReturn
 import xmltodict  # XML 파싱 모듈
