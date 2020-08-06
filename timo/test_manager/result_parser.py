@@ -4,9 +4,11 @@ from timo.test_manager.tools.coverage import CoverageParser
 from timo.test_manager.tools.eslint import ESLintParser
 from timo.test_manager.tools.flake8 import Flake8Parser
 from timo.test_manager.tools.jacoco import JacocoParser
+from timo.test_manager.tools.pmd import PMDParser
 from timo.test_manager.tools.selenium import SeleniumParser
 from timo.test_manager.tools.surefire import SurefireParser
 from timo.test_manager.tools.unittest import UnittestParser
+from timo.utils import equals
 from typing import NoReturn
 from timo.utils import colored_print
 import os
@@ -24,6 +26,7 @@ class Parser(object):
         self.coverage = CoverageParser()
         self.selenium = SeleniumParser()
         self.eslint = ESLintParser()
+        self.pmd = PMDParser()
 
     def _csw(self) -> dict:
         """
@@ -34,10 +37,12 @@ class Parser(object):
         """
 
         result = {}
-        if self.test_tool == 'flake8':
+        if equals(self.test_tool, 'flake8'):
             result = self.flake8.parse(path=self.path, file_type=self.file_type)
-        elif self.test_tool == 'eslint':
+        elif equals(self.test_tool, 'eslint'):
             result = self.eslint.parse(path=self.path, file_type=self.file_type)
+        elif equals(self.test_tool, 'pmd'):
+            result = self.pmd.parse(path=self.path, file_type=self.file_type)
         else:
             raise UnknownTestTestToolError
 
@@ -51,9 +56,9 @@ class Parser(object):
                 dict: Test result
         """
 
-        if self.test_tool == 'surefire':
+        if equals(self.test_tool, 'surefire'):
             result = self.surefire.parse(path=self.path, file_type=self.file_type)
-        elif self.test_tool == 'unittest':
+        elif equals(self.test_tool, 'unittest'):
             result = self.unittest.parse(path=self.path, file_type=self.file_type)
         else:
             raise UnknownTestTestToolError
@@ -68,9 +73,9 @@ class Parser(object):
                 dict: Test result
         """
 
-        if self.test_tool == 'jacoco':
+        if equals(self.test_tool, 'jacoco'):
             result = self.jacoco.parse(path=self.path, file_type=self.file_type)
-        elif self.test_tool == 'coverage':
+        elif equals(self.test_tool, 'coverage'):
             result = self.coverage.parse(path=self.path, file_type=self.file_type)
         else:
             raise UnknownTestTestToolError
@@ -96,7 +101,7 @@ class Parser(object):
                 dict: Test result
         """
 
-        if self.test_tool == 'selenium':
+        if equals(self.test_tool, 'selenium'):
             result = self.selenium.parse(path=self.path, file_type=self.file_type)
 
         return result
