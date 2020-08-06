@@ -1,0 +1,77 @@
+{
+    "project-name": "",
+    "version": "",
+    "Tests": {
+        "CSW": {
+            "uses": "",
+            "with": "",
+            "run": [],
+            "report": {
+                "type": "",
+                "path": ""
+            }
+        },
+        "Unittest": {
+            "uses": "",
+            "with": "",
+            "run": [],
+            "report": {
+                "type": "",
+                "path": ""
+            }
+        },
+        "Coverage": {
+            "uses": "",
+            "run": [],
+            "report": {
+                "type": "",
+                "path": ""
+            }
+        },
+        "APItest": {
+            "uses": "",
+            "run": [
+            ],
+            "report": {
+                "type": "",
+                "path": ""
+            }
+        },
+        "E2Etest": {
+            "uses": "",
+            "run": [],
+            "report": {
+                "type": "",
+                "path": ""
+            }
+        }
+    },
+    "Score": {
+        "custom": "True",
+        "set": {
+            "CSW": "10%",
+            "Unittest": "30%",
+            "Coverage": "10%",
+            "APItest": "30%",
+            "E2Etest": "20%"
+        }
+    },
+    "Post": {
+        "type": "email",
+        "set": [
+            {
+                "name": "developer",
+                "recipients": [
+                    "foo@bar.com"
+                ]
+            },
+            {
+                "name": "director",
+                "recipients": [
+                    "foo@bar.com",
+                    "abc@abc.com"
+                ]
+            }
+        ]
+    }
+}
