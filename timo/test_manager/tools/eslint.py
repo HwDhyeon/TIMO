@@ -10,9 +10,22 @@ class ESLintParser(object):
 
     def parse(self, path: str, file_type: str) -> dict:
         def _checkstyle() -> dict:
+            def find_warnings(file_tag: dict):
+                if 'error' not in file_tag:
+                    return 0
+                if isinstance(file_tag['error'], list):
+                    return len(file_tag['error'])
+                return 1
             xml = self.reader.read_xml_file(path)
+            data = xml['checkstyle']['file']
+            warnings = 0
+            if isinstance(data, list):
+                for tag in data:
+                    warnings += find_warnings(tag)
+            else:
+                warnings = find_warnings(data)
             return {
-                'warning': len(xml['checkstyle']['file']['error'])
+                'warning': warnings
             }
 
         def _codeframe() -> dict:
