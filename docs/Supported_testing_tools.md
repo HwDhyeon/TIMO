@@ -12,6 +12,7 @@ _이 문서에서는 `TIMO`가 분석할 수 있는 테스트 도구의 목록�
 ### Source code static analysis tool
 
 - flake8
+- pmd
 - eslint  
   경고: ESLint는 Output format으로 작성해야 합니다.  
   `type`에 **eslint**를 작성하면 작동하지 않습니다.
