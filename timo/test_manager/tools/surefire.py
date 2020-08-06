@@ -33,14 +33,13 @@ class SurefireParser(object):
             'fail': 0,
             'skip': 0
         }  # 반환할 값 미리 세팅 file_type이 맞지 않을 경우 이 값을 반환한다
-        for test in glob.glob(pathname=path + "*.xml"):
-            print(test)
+        for test in glob.glob(pathname=path + "/TEST*.xml"):
             if file_type == 'xml':
                 xml: dict = self.reader.read_xml_file(test)
                 data: dict = xml['testsuite']
-                return_val['fail'] = int(data['@failures']) + int(data['@errors'])  # 에러 개수와 실패 개수를 모두 실패 개수로 판단
-                return_val['skip'] = int(data['@skipped'])  # 스킵된 테스트 개수
-                return_val['success'] = int(data['@tests']) - return_val['fail'] - return_val['skip']
+                return_val['fail'] += int(data['@failures']) + int(data['@errors'])  # 에러 개수와 실패 개수를 모두 실패 개수로 판단
+                return_val['skip'] += int(data['@skipped'])  # 스킵된 테스트 개수
+                return_val['success'] += int(data['@tests']) - return_val['fail'] - return_val['skip']
             elif file_type == 'txt':
                 colored_print('Warning:', 'red')
                 colored_print('\tThis feature is still incomplete.', 'red')
@@ -51,7 +50,7 @@ class SurefireParser(object):
                     if 'Tests run:' in line:
                         result_line.append(line)
                 total: str = int(result_line[0].split()[-1])  # 전체 테스트 개수
-                return_val['fail'] = int(result_line[1].split()[-1]) + int(result_line[2].split()[-1])  # 에러 개수와 실패 개수를 모두 실패 개수로 판단
-                return_val['skip'] = int(result_line[3].split()[-1])  # 스킵된 테스트 개수
-                return_val['success'] = total - return_val['fail'] - return_val['skip']
+                return_val['fail'] += int(result_line[1].split()[-1]) + int(result_line[2].split()[-1])  # 에러 개수와 실패 개수를 모두 실패 개수로 판단
+                return_val['skip'] += int(result_line[3].split()[-1])  # 스킵된 테스트 개수
+                return_val['success'] += total - return_val['fail'] - return_val['skip']
         return return_val
