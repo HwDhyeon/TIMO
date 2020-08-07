@@ -54,7 +54,7 @@ class MySQL(object):
             colored_print(e, 'red')
 
     @timer
-    def send_query(self, sql: AnyStr, type: str, save=None) -> NoReturn:
+    def send_query(self, sql: AnyStr, type: str, args=[], save=None) -> NoReturn:
         """
         Pass SQL query statements to the database.
 
@@ -158,7 +158,7 @@ class MySQL(object):
                 return True
             else:
                 return False
-        self.cursor.execute(sql)
+        self.cursor.execute(sql, args)
         colored_print(f'Sending {type.upper()} query to MySQL...', 'yellow')
         try:
             if type == 'select':
