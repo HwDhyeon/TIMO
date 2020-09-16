@@ -40,7 +40,7 @@ class Reader(object):
                 str: String containing the contents of the file
         """
 
-        with open(file=path, mode='rU') as f:
+        with open(file=path, mode='rU', encoding='utf-8') as f:
             return f.read()
 
     def read_html_file(self, path: str) -> Dict:
