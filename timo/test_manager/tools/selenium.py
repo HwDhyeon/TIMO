@@ -2,6 +2,8 @@ import glob
 from timo.file_manager.file_reader import Reader
 from timo.utils import colored_print
 
+import glob
+
 
 class SeleniumParser(object):
     def __init__(self):
@@ -14,14 +16,16 @@ class SeleniumParser(object):
             'skip': 0
         }
         if file_type == 'xml':
-            for file in glob.glob(path, recursive=True):
-                selenium_data = self.reader.read_xml_file(path)
+            file_list = glob.glob(path + '/**/*.xml', recursive=True)
+            for file in file_list:
+                selenium_data = self.reader.read_xml_file(file)
                 total = int(selenium_data['testsuites']['@tests'])
                 fail = int(selenium_data['testsuites']['@failures'])
                 success = total - fail
                 return_val['success'] += success
                 return_val['fail'] += fail
         else:
-            colored_print('Sorry, there is no information you can get from this type of file.', 'orange')
+            colored_print(
+                'Sorry, there is no information you can get from this type of file.', 'orange')
 
         return return_val
