@@ -126,6 +126,7 @@ class ScoreCalculator(object):
         colored_print('-' * 19, colorname='white')
         for test, value in score.items():
             _score = value['score'] / value['count'] if value['count'] != 0 else 0
+            score[test] = _score * 10
             fstr = f'{_score * 10:>6.2f}' if _score != 0 else '{:>5}'.format('❌')
             colored_print(f'{test:<10}', colorname='white', end='')
             colored_print(' → ', colorname='cyan', end='')
@@ -136,7 +137,7 @@ class ScoreCalculator(object):
         colored_print(f'{res:>6.2f}', colorname='blue')
         print()
 
-        return res
+        return res, score
 
 
 if __name__ == "__main__":
