@@ -69,6 +69,12 @@ class ConfigReader(object):
         """
         return self.read_config_file()['version']
 
+    def get_timo_board_account(self) -> Dict:
+        """
+        Returns the timoboard account information.
+        """
+        return self.read_config_file()['TIMOboard']
+
     def get_tests(self) -> List[str]:
         """
         Returns the type of all tests declared in the file.
@@ -137,3 +143,11 @@ class ConfigReader(object):
             'type': self.read_config_file()['Post']['type'],
             'info': self.read_config_file()['Post']['set']
         }
+
+    def get_db_info(self, db_name: str) -> Dict:
+        path = './data/db.json'
+        if os.path.isfile(path=path):
+            db_json = self._file_reader.read_json_file(path)
+            if db_name in db_json:
+                return db_json[db_name]
+            raise KeyError(db_name)
