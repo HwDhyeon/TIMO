@@ -1,191 +1,162 @@
-"""Connect to MySQL and execute various queries."""
+# -*- coding: utf-8 -*-
 
-from timo.decorators import timer
-from typing import Any
-from typing import AnyStr
-from typing import Dict
-from typing import List
-from typing import NoReturn
-from typing import Tuple
-from timo.utils import colored_print
-import csv
+import datetime
+import logging
 import json
 import os
 import pymysql
+import sys
 import yaml
+from typing import Any
+from typing import Dict
+from typing import Final
+from typing import List
+from typing import NoReturn
+from typing import Union
+
+from timo.database_manager.models import Database
 
 
-class MySQL(object):
-    """MySQL"""
+QueryResult = Dict[str, Union[str, int, float]]
+QueryResults = List[QueryResult]
 
-    @timer
-    def open_DB_session(self) -> NoReturn:
-        """Try to access the database."""
+LOG_PATH: Final[str] = os.path.dirname(__file__) + '/logs/mysql.log'
 
-        def _read_DB_info() -> Dict:
-            """Read information needed to access the database."""
+if os.path.isfile(LOG_PATH):
+    os.remove(LOG_PATH)
 
-            with open(file=os.getcwd() + '/data/db.json', mode='r', encoding='utf-8') as db:
-                return json.load(db)
+logging.basicConfig(
+    filename=LOG_PATH,
+    level=logging.INFO, filemode='w',
+    format='%(asctime)s:\n\t%(levelname)s:%(message)s',
+    datefmt='%m/%d/%Y %I:%M:%S %p'
+)
+
+def _log_file_write(func):
+    def wrapper(*args, **kwargs):
+        path = func(*args, **kwargs)
+        logging.info(f'Save success as query execution result file (path: {path})')
+    return wrapper
+
+
+class MySQL(Database):
+    """MySQL Client"""
+
+    def __init__(self, config) -> None:
+        super(MySQL, self).__init__(config)
+        self.db = config.db
+        self.charset = config.charset
+
+    def __connect__(self) -> NoReturn:
         try:
-            colored_print('Connecting DB...', 'yellow')
-            self.db_info: dict = _read_DB_info()['mysql']
-            self.conn: pymysql.Connection = pymysql.connect(
-                host=self.db_info['host'],
-                port=self.db_info['port'],
-                user=self.db_info['user'],
-                password=self.db_info['password'],
-                db=self.db_info['db']
+            self.conn = pymysql.connect(
+                host=self.host,
+                port=self.port,
+                user=self.user,
+                password=self.password,
+                db=self.db,
+                charset=self.charset
             )
-            self.cursor: pymysql.cursors.Cursor = self.conn.cursor()
-        except Exception as e:
-            colored_print(e, 'red')
+            self.cursor = self.conn.cursor(pymysql.cursors.DictCursor)
+        except pymysql.MySQLError as e:
+            logging.error(e)
+            print(f"Error connecting to MySQL Platform: {e}")
+            sys.exit(1)
         else:
-            colored_print('Done', 'green')
+            logging.info('Database connection successful')
 
-    def close_DB_session(self) -> NoReturn:
-        """Terminate the connection to the database."""
-
+    def __commit__(self) -> NoReturn:
         try:
             self.conn.commit()
-            self.conn.close()
-            self.cursor.close()
-        except Exception as e:
-            colored_print(e, 'red')
-
-    @timer
-    def send_query(self, sql: AnyStr, type: str, args=[], save=None) -> NoReturn:
-        """
-        Pass SQL query statements to the database.
-
-            Paramaters:
-                sql(str): SQL query statement.
-                          Dynamic delivery is not possible and must first be converted to plaintext.
-                type(str['select', 'insert', 'delete', 'update']): The format of the SQL query statement.
-                save(str, None): Determines whether to save results when the SQL query is select.
-                                 If None, it is displayed on the screen.
-                                 If you enter a file format, the file is saved in that format.
-                                 The default value is None.
-                                 If it does not match the supported format, it is saved as txt.
-                                 Supported formats: ['csv', 'json', 'yaml', 'yml', 'txt']
-        """
-
-        def _get_column_names(cursor: pymysql.cursors.Cursor) -> List[AnyStr]:
-            """
-            Get the column names of a table.
-
-                Parameters:
-                    cursor(pymysql.cursors.Cursor): Cursor object associated with MySQL.
-
-                Returns:
-                    list: Returns a list of strings containing column names.
-            """
-            return [i[0] for i in cursor.description]
-
-        def _on_save(save: AnyStr, result: List[Tuple[Any]]) -> bool:
-            """
-            Decide whether to save the results of the query to a file.
-
-                Parameters:
-                    save(srt): The default value is None, in which case the results are not saved to a file.
-                               The supported formats are: ['json', 'yaml', 'yml', 'csv', 'txt']
-                               If any other format is entered, it is converted to txt.
-
-                    result(List[Tuple]): A list that contains the results of the query.
-
-                Returns:
-                    bool: Returns True if saved as a file, False otherwise.
-
-            """
-
-            def _save(path: str, data: Any) -> NoReturn:
-                """
-                Save the input data in the designated format.
-
-                    Parameters:
-                        path(str): Where the file will be saved
-                        data(any): Raw data to be saved to file
-                """
-
-                ext: str = path.split('.')[-1]
-                colored_print('Save query result...', 'yellow')
-                colored_print(f'File ext: {ext}', 'yellow', end='\n\n')
-                with open(file=path, mode='w', encoding='utf-8', newline='') as f:
-                    if ext == 'csv' or ext == 'txt':
-                        wr = csv.writer(f)
-                        wr.writerows(data)
-                    else:
-                        f.write(data)
-
-            def _compression(columns: list, rows: list) -> List[Dict]:
-                """
-                Compress the query result into a list in the form of { column: value }
-
-                    Parameters:
-                        columns(list): Table column names
-                        rows(list): Query results
-                    Returns:
-                        list(dict): A list converted to a dictionary of type { column: value }
-                """
-
-                r = []
-                for row in rows:
-                    r.append(dict(zip(columns, row)))
-                return r
-
-            if save is not None:
-                colored_print('Parse query result...', 'yellow', end='\n\n')
-                data = None
-                columns: list = _get_column_names(cursor=self.cursor)
-                if save == 'json':
-                    data = json.dumps(_compression(columns, result), indent='\t')
-                elif save == 'yaml' or save == 'yml':
-                    data = yaml.dump(_compression(columns, result), indent=4)
-                elif save == 'csv':
-                    data = [columns]
-                    for row in list(result):
-                        data.append(row)
-                else:
-                    if save != 'txt':
-                        colored_print('현재 지원되지 않는 파일 형식입니다.', 'red', end='\t')
-                        colored_print(f'(입력된 파일 형식: {save})', 'red')
-                        colored_print('sql.txt 파일로 대체됩니다.', 'red', end='\n\n')
-                        save = 'txt'
-                    data = [columns]
-                    for row in list(result):
-                        data.append(row)
-                _save(f'./out.{save}', data)
-                return True
-            else:
-                return False
-        self.cursor.execute(sql, args)
-        colored_print(f'Sending {type.upper()} query to MySQL...', 'yellow')
-        try:
-            if type == 'select':
-                result: list = list(self.cursor.fetchall())
-                columns: list = _get_column_names(cursor=self.cursor)
-                if not _on_save(save, result):
-                    print(' │ ' + ' │ '.join(columns) + ' │ ')
-                    for row in result:
-                        print(' │ ' + ' │ '.join(map(str, row)) + ' │ ')
-            else:
-                pass
-        except Exception as e:
-            colored_print(e, 'red')
+        except pymysql.MySQLError as e:
+            logging.error(e)
+            sys.exit(2)
         else:
-            colored_print('Done', 'green')
+            logging.info('The changes have been reflected in the database.')
+
+    def __disconnect__(self) -> NoReturn:
+        self.__commit__()
+        self.cursor.close()
+        self.conn.close()
+        logging.info('Database connection termination success')
+
+    def _clean_datetime(self, query_result: Union[QueryResult, QueryResults]) -> str:
+        """Converts a datetime object to a string when the column data type is DATETIME
+
+        Args:
+            query_result (Union[QueryResult, QueryResults]): [description]
+
+        Returns:
+            str: [description]
+        """
+
+        if isinstance(query_result, dict):
+            query_result = [query_result]
+
+        for i, result in enumerate(query_result):
+            for key, value in result.items():
+                if isinstance(value, datetime.datetime):
+                    query_result[i][key] = value.strftime(r'%Y-%m-%d %H:%M:%S')
+        return query_result
+
+    def execute(self, query: str, *, args: Dict[str, Any]={}) -> NoReturn:
+        try:
+            self.__connect__()
+            self.cursor.execute(query=query, args=args)
+        except pymysql.MySQLError as e:
+            print(e)
+            logging.error(e)
+            self.__disconnect__()
+        else:
+            logging.info(f'Query execution completed (Type: {query.upper().split()[0]})')
+
+    def executemany(self, query: str, *, args: Dict[str, Any]={}) -> NoReturn:
+        self.__connect__()
+        self.cursor.executemany(query=query, args=args)
+        self.__disconnect__()
+
+    def execute_with_fetch_one(self, query: str, *, args: Dict[str, Any]={}) -> Dict[str, Union[str, int, float]]:
+        self.execute(query=query, args=args)
+        response: dict = self.cursor.fetchone()
+        self.__disconnect__()
+        clean_response = self._clean_datetime(response)
+        return clean_response[0]
+
+    def execute_with_fetch_many(self, query: str, size: int, *, args: Dict[str, Any]={}) -> Dict[str, Union[str, int, float]]:
+        self.execute(query=query, args=args)
+        response: dict = self.cursor.fetchmany(size=size)
+        self.__disconnect__()
+        clean_response = self._clean_datetime(response)
+        return clean_response
+
+    def execute_with_fetch_all(self, query: str, *, args: Dict[str, Any]={}) -> Dict[str, Union[str, int, float]]:
+        self.execute(query=query, args=args)
+        response: dict = self.cursor.fetchall()
+        clean_response = self._clean_datetime(response)
+        self.__disconnect__()
+        return clean_response
+
+    @_log_file_write
+    def execute_save_json(self, query: str, path: str, *, args: Dict[str, Any]={}, encoding='utf-8') -> str:
+        response = self.execute_with_fetch_all(query=query, args=args)
+        with open(file=path, mode='w', encoding=encoding) as f:
+            f.write(json.dumps(response, indent='\t', ensure_ascii=False))
+        return path
+
+    @_log_file_write
+    def execute_save_yaml(self, query: str, path: str, *, args: Dict[str, Any]={}, encoding='utf-8') -> str:
+        response = self.execute_with_fetch_all(query=query, args=args)
+        with open(file=path, mode='w', encoding=encoding) as f:
+            f.write(yaml.dump(response, indent=4, allow_unicode=True))
+        return path
+
+    def execute_save_yml(self, query: str, path: str, *, args: Dict[str, Any]={}, encoding='utf-8') -> str:
+        self.execute_save_yaml(query=query, path=path, args=args, encoding=encoding)
 
 
 if __name__ == "__main__":
-    sql = """SELECT
-        *
-        FROM
-            JENKINS_BUILD_RESULT
-    WHERE
-        PROJECT_NM = 'IRIS-E2E-SAAS'
-        AND
-        BUILD_NO = (SELECT MAX(BUILD_NO) FROM JENKINS_BUILD_RESULT WHERE PROJECT_NM = 'IRIS-E2E-SAAS')"""
-    db: MySQL = MySQL()
-    db.open_DB_session()
-    db.send_query(sql=sql, type='select', save='yaml')
-    db.close_DB_session()
+    from config import Config
+    mysql = MySQL(Config.mysql)
+    # response = mysql.execute_with_fetch_all(query='select * from users')
+    mysql.execute_save_json(query='select * from users', path='./results/sql.json')
+    mysql.execute_save_yml(query='select * from users', path='./results/sql.yml')
